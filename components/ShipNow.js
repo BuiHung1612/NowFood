@@ -14,7 +14,7 @@ import {useNavigation} from '@react-navigation/native';
 import {getShipNow} from '../services/API';
 import {getImage} from '../ultis/index';
 
-const ShipNow = () => {
+const ShipNow = props => {
   const navigation = useNavigation();
   const [dataNow, setNow] = useState();
   useEffect(() => {
@@ -35,7 +35,12 @@ const ShipNow = () => {
             <TouchableOpacity
               style={styles.boxBtn}
               activeOpacity={0.7}
-              onPress={() => navigation.navigate('Detail', {id: item.id})}>
+              onPress={() =>
+                navigation.navigate('Detail', {
+                  id: item.id,
+                  idScreen: props.idScreen,
+                })
+              }>
               <View>
                 <Image
                   source={{

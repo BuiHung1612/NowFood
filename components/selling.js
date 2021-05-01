@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -14,13 +14,13 @@ import {useNavigation} from '@react-navigation/native';
 import {getSelling} from '../services/API';
 import {getImage} from '../ultis/index';
 
-const selling = () => {
+const selling = props => {
   const navigation = useNavigation();
   const [dataSelling, setSelling] = useState();
   useEffect(() => {
     const getApiProduct = async () => {
       const result = await getSelling();
-      console.log('result', result.data.reply.delivery_infos);
+      //console.log('result', result.data.reply.delivery_infos);
       setSelling(result.data.reply.delivery_infos);
     };
 
@@ -35,7 +35,12 @@ const selling = () => {
             <TouchableOpacity
               style={styles.boxBtn}
               activeOpacity={0.7}
-              onPress={() => navigation.navigate('Detail', {id: item.id})}>
+              onPress={() =>
+                navigation.navigate('Detail', {
+                  id: item.delivery_id,
+                  idScreen: props.idScreen,
+                })
+              }>
               <View>
                 <Image
                   source={{
@@ -76,20 +81,6 @@ const selling = () => {
                     <Text>0.6km</Text>
                   </View>
                 </View>
-                {/* <View
-                  style={{flexDirection: 'row', marginLeft: 15, marginTop: 5}}>
-                  {NearMeData.filter(e => e.id == item.id).map(e =>
-                    e.sale.map(a => {
-                      if (a.sale1) {
-                        return (
-                          <View style={styles.boxsale} key={a.id}>
-                            <Text style={styles.sale}>{a.sale1}</Text>
-                          </View>
-                        );
-                      }
-                    }),
-                  )}
-                </View> */}
                 <TouchableOpacity
                   style={{marginLeft: 15, flexDirection: 'row'}}>
                   <Text style={styles.location}>{item.location_url}</Text>

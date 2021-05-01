@@ -11,120 +11,163 @@ import {
 import Products from '../data/Products';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Rate from '../data/Rate';
+import {useDispatch, useSelector} from 'react-redux';
+import {useEffect} from 'react';
+import {getShop} from '../services/API';
+import {cos} from 'react-native-reanimated';
 const ProductDescribe = ({route, navigation}) => {
   const {id} = route.params;
+  const data = useSelector(store => store.idShop);
+  const dispatch = useDispatch();
+  const [productDetail, setProductDetail] = useState();
+  console.log('ID_SHOP', id);
+  console.log('ID_PRODUCT', data.id_Product);
+  useEffect(() => {
+    const getDetailProduct = async () => {
+      //console.log('id:', id);
+      //console.log(data.id_Product);
 
+      const result = await getShop(id);
+      setProductDetail(result.data.reply.menu_infos);
+      console.log(result.data.reply.menu_infos);
+    };
+
+    getDetailProduct();
+  }, []);
   const RenderItem = item => {
-    if (item.id === id)
-      return (
-        <View>
-          <ImageBackground
-            source={{uri: item.url}}
-            style={styles.imgbackground}
-            resizeMode="cover">
-            <TouchableOpacity onPress={() => navigation.navigate('Detail')}>
-              <Ionicons
-                name="chevron-back-outline"
-                size={35}
-                color="#fff"
-                style={{marginTop: 15, marginLeft: 8}}
-              />
-            </TouchableOpacity>
-          </ImageBackground>
-          <View style={styles.boxtitle}>
-            <Text style={{fontSize: 20, fontWeight: 'bold'}}>{item.title}</Text>
-            <Text style={styles.sold}>
-              {item.sold}+ đã bán | {item.liked}+ đã thích
-            </Text>
+    // console.log('id1d', item.id);
+    // console.log('id2d', data.id_Product);
+    return (
+      <View key={item.id}>
+        <ImageBackground
+          source={{uri: item.photos?.[4].value}}
+          style={styles.imgbackground}
+          resizeMode="cover">
+          <TouchableOpacity onPress={() => navigation.navigate('Detail')}>
+            <Ionicons
+              name="chevron-back-outline"
+              size={35}
+              color="#fff"
+              style={{marginTop: 15, marginLeft: 8}}
+            />
+          </TouchableOpacity>
+        </ImageBackground>
+        <View style={styles.boxtitle}>
+          <Text style={{fontSize: 20, fontWeight: 'bold'}}>{item.name}</Text>
+          <Text style={styles.sold}>
+            999+ đã bán | {item.total_like} đã thích
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginTop: 20,
+            }}>
             <View
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                marginTop: 20,
               }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }}>
-                <Text style={styles.price}>{item.price - 4500}đ</Text>
-                <Text style={styles.oldprice}>{item.price}đ</Text>
-              </View>
-              <TouchableOpacity>
-                <Ionicons name="add-circle" size={35} color="#EA3534" />
-              </TouchableOpacity>
+              <Text style={styles.price}>{item.price.text}</Text>
+              <Text style={styles.oldprice}>{item.price.text}</Text>
             </View>
+            <TouchableOpacity onPress={() => addCart()}>
+              <Ionicons name="add-circle" size={35} color="#EA3534" />
+            </TouchableOpacity>
           </View>
         </View>
-      );
-  };
-  const Footer = () => {
-    return (
-      <FlatList
-        data={Rate}
-        renderItem={({item}) => {
-          return (
-            <View style={styles.boxCmt}>
-              <Image source={{uri: item.imgUser}} style={styles.imgUrl} />
-              <View>
-                <View style={styles.boxname}>
-                  <Text style={styles.userName}>{item.userName}</Text>
-                  <Text style={styles.dateTime}>{item.dateTime}</Text>
-                </View>
-
-                {item.stars == 5 ? (
-                  <View style={styles.star}>
-                    <Ionicons name="star" size={20} color="yellow" />
-                    <Ionicons name="star" size={20} color="yellow" />
-                    <Ionicons name="star" size={20} color="yellow" />
-                    <Ionicons name="star" size={20} color="yellow" />
-                    <Ionicons name="star" size={20} color="yellow" />
-                    <Text style={styles.stars}>{item.stars} tuyệt vời</Text>
-                  </View>
-                ) : item.stars == 4 ? (
-                  <View style={styles.star}>
-                    <Ionicons name="star" size={20} color="yellow" />
-                    <Ionicons name="star" size={20} color="yellow" />
-                    <Ionicons name="star" size={20} color="yellow" />
-                    <Ionicons name="star" size={20} color="yellow" />
-                    <Text style={styles.stars}>{item.stars} tuyệt vời</Text>
-                  </View>
-                ) : item.stars == 3 ? (
-                  <View style={styles.star}>
-                    <Ionicons name="star" size={20} color="#FFB200" />
-                    <Ionicons name="star" size={20} color="#FFB200" />
-                    <Ionicons name="star" size={20} color="#FFB200" />
-                    <Text style={styles.stars}>{item.stars} tuyệt vời</Text>
-                  </View>
-                ) : item.stars == 2 ? (
-                  <View style={styles.star}>
-                    <Ionicons name="star" size={20} color="#FFB200" />
-                    <Ionicons name="star" size={20} color="#FFB200" />
-                    <Text style={styles.stars}>{item.stars} tuyệt vời</Text>
-                  </View>
-                ) : item.stars == 1 ? (
-                  <View style={styles.star}>
-                    <Ionicons name="star" size={20} color="#FFB200" />
-                    <Text style={styles.stars}>{item.stars} tuyệt vời</Text>
-                  </View>
-                ) : (
-                  console.log('null')
-                )}
-                <Text>{item.comment}</Text>
-              </View>
-            </View>
-          );
-        }}
-      />
+      </View>
     );
   };
+
+  const addCart = () => {
+    console.log('click');
+    dispatch({
+      type: 'addCart',
+      data: {
+        idShop: id,
+        id_Product: data.id_Product,
+        dishes_type_id: data.dish_type_id,
+      },
+    });
+  };
+  // const Footer = () => {
+  //   return (
+  //     <FlatList
+  //       data={Rate}
+  //       renderItem={({item}) => {
+  //         return (
+  //           <View style={styles.boxCmt}>
+  //             <Image source={{uri: item.imgUser}} style={styles.imgUrl} />
+  //             <View>
+  //               <View style={styles.boxname}>
+  //                 <Text style={styles.userName}>{item.userName}</Text>
+  //                 <Text style={styles.dateTime}>{item.dateTime}</Text>
+  //               </View>
+
+  //               {item.stars == 5 ? (
+  //                 <View style={styles.star}>
+  //                   <Ionicons name="star" size={20} color="yellow" />
+  //                   <Ionicons name="star" size={20} color="yellow" />
+  //                   <Ionicons name="star" size={20} color="yellow" />
+  //                   <Ionicons name="star" size={20} color="yellow" />
+  //                   <Ionicons name="star" size={20} color="yellow" />
+  //                   <Text style={styles.stars}>{item.stars} tuyệt vời</Text>
+  //                 </View>
+  //               ) : item.stars == 4 ? (
+  //                 <View style={styles.star}>
+  //                   <Ionicons name="star" size={20} color="yellow" />
+  //                   <Ionicons name="star" size={20} color="yellow" />
+  //                   <Ionicons name="star" size={20} color="yellow" />
+  //                   <Ionicons name="star" size={20} color="yellow" />
+  //                   <Text style={styles.stars}>{item.stars} tuyệt vời</Text>
+  //                 </View>
+  //               ) : item.stars == 3 ? (
+  //                 <View style={styles.star}>
+  //                   <Ionicons name="star" size={20} color="#FFB200" />
+  //                   <Ionicons name="star" size={20} color="#FFB200" />
+  //                   <Ionicons name="star" size={20} color="#FFB200" />
+  //                   <Text style={styles.stars}>{item.stars} tuyệt vời</Text>
+  //                 </View>
+  //               ) : item.stars == 2 ? (
+  //                 <View style={styles.star}>
+  //                   <Ionicons name="star" size={20} color="#FFB200" />
+  //                   <Ionicons name="star" size={20} color="#FFB200" />
+  //                   <Text style={styles.stars}>{item.stars} tuyệt vời</Text>
+  //                 </View>
+  //               ) : item.stars == 1 ? (
+  //                 <View style={styles.star}>
+  //                   <Ionicons name="star" size={20} color="#FFB200" />
+  //                   <Text style={styles.stars}>{item.stars} tuyệt vời</Text>
+  //                 </View>
+  //               ) : (
+  //                 console.log('null')
+  //               )}
+  //               <Text>{item.comment}</Text>
+  //             </View>
+  //           </View>
+  //         );
+  //       }}
+  //     />
+  //   );
+  // };if(item.dish_type_id==data.dish_type_id)
 
   return (
     <View style={styles.container}>
       <FlatList
-        data={Products}
-        ListFooterComponent={Footer}
-        renderItem={({item}) => RenderItem(item)}
+        data={productDetail}
+        renderItem={({item}) =>
+          item.dishes.map((e, i) => {
+            if (
+              e.id == data.id_Product &&
+              item.dish_type_id == data.dish_type_id
+            ) {
+              // console.log(data.dish_type_id, item.dish_type_id);
+              return RenderItem(e);
+            }
+          })
+        }
+        keyExtractor={item => item.dish_type_id}
       />
     </View>
   );

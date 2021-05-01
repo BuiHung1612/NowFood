@@ -14,15 +14,15 @@ import {useNavigation} from '@react-navigation/native';
 import {getNearMe} from '../services/API';
 import {getImage} from '../ultis/index';
 
-const NearMe = () => {
+const NearMe = props => {
   const navigation = useNavigation();
   const [DataNearMe, setNearMe] = useState();
   useEffect(() => {
     const getApiProduct = async () => {
       const result = await getNearMe();
-      console.log('result', result.data.reply.delivery_infos);
+      //console.log('result', result.data.reply.delivery_infos);
       setNearMe(result.data.reply.delivery_infos);
-      console.log(DataNearMe);
+      //console.log(DataNearMe);
     };
 
     getApiProduct();
@@ -36,7 +36,12 @@ const NearMe = () => {
             <TouchableOpacity
               style={styles.boxBtn}
               activeOpacity={0.7}
-              onPress={() => navigation.navigate('Detail', {id: item.id})}>
+              onPress={() =>
+                navigation.navigate('Detail', {
+                  id: item.delivery_id,
+                  idScreen: props.idScreen,
+                })
+              }>
               <View>
                 <Image
                   source={{

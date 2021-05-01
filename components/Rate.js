@@ -14,7 +14,7 @@ import {useNavigation} from '@react-navigation/native';
 import {getRate} from '../services/API';
 import {getImage} from '../ultis/index';
 
-const Rate = () => {
+const Rate = props => {
   const navigation = useNavigation();
   const [dataRate, setRate] = useState();
   useEffect(() => {
@@ -35,7 +35,12 @@ const Rate = () => {
             <TouchableOpacity
               style={styles.boxBtn}
               activeOpacity={0.7}
-              onPress={() => navigation.navigate('Detail', {id: item.id})}>
+              onPress={() =>
+                navigation.navigate('Detail', {
+                  id: item.id,
+                  idScreen: props.idScreen,
+                })
+              }>
               <View>
                 <Image
                   source={{

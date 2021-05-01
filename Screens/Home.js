@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {
+  Dimensions,
   FlatList,
   Image,
   ScrollView,
@@ -23,20 +24,21 @@ import Rate from '../components/Rate';
 import ShipNow from '../components/ShipNow';
 const Home = ({navigation}) => {
   const [SC, setScreen] = useState('NearMe');
-
+  const windowWidth = Dimensions.get('window').width;
+  const windowHeight = Dimensions.get('window').height;
   const ToggleScreen = () => {
     if (SC) {
       if (SC == 'NearMe') {
-        return <NearMe />;
+        return <NearMe idScreen="1" />;
       }
       if (SC == 'selling') {
-        return <Selling />;
+        return <Selling idScreen="2" />;
       }
       if (SC == 'rate') {
-        return <Rate />;
+        return <Rate idScreen="3" />;
       }
       if (SC == 'now') {
-        return <ShipNow />;
+        return <ShipNow idScreen="4" />;
       }
     }
   };
@@ -686,6 +688,7 @@ const Home = ({navigation}) => {
                   borderTopWidth: 2,
                   paddingTop: 6,
                   paddingLeft: 13,
+                  flex: 0.5,
                 }}>
                 <ToggleScreen />
               </View>

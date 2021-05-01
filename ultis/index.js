@@ -9,3 +9,10 @@ export const getImageSelling = (imgUrl, restaurant_id, split) => {
   console.log('chuoi :', split);
   //return `https://images.foody.vn/res/${a[4]}/${restaurant_id}/prof/s640x400/${imgUrl}`;
 };
+
+export const getImageShop = imgUrl => {
+  return imgUrl;
+};
+export const getProductImage = imgUrl => {
+  return imgUrl;
+};
