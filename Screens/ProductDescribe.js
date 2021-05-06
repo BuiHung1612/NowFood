@@ -68,10 +68,25 @@ const ProductDescribe = ({route, navigation}) => {
                 flexDirection: 'row',
                 justifyContent: 'space-between',
               }}>
-              <Text style={styles.price}>{item.price.text}</Text>
-              <Text style={styles.oldprice}>{item.price.text}</Text>
+              <Text style={styles.price}>{item.discount_price?.text}</Text>
+              <Text
+                style={[
+                  styles.oldprice,
+                  {
+                    textDecorationLine: item.discount_price
+                      ? 'line-through'
+                      : 'none',
+                    color: item.discount_price ? '#C5C5C5' : '#000',
+                    fontWeight: item.discount_price ? '500' : 'bold',
+                  },
+                ]}>
+                {item.price.text}
+              </Text>
             </View>
-            <TouchableOpacity onPress={() => addCart()}>
+            <TouchableOpacity
+              onPress={() =>
+                addCart(item.price.text, item.photos?.[4].value, item.name)
+              }>
               <Ionicons name="add-circle" size={35} color="#EA3534" />
             </TouchableOpacity>
           </View>
@@ -80,14 +95,17 @@ const ProductDescribe = ({route, navigation}) => {
     );
   };
 
-  const addCart = () => {
-    console.log('click');
+  const addCart = (price, img, title) => {
     dispatch({
       type: 'addCart',
       data: {
         idShop: id,
         id_Product: data.id_Product,
         dishes_type_id: data.dish_type_id,
+        service_type: data.service_type,
+        price: price,
+        img: img,
+        title: title,
       },
     });
   };
@@ -203,9 +221,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   oldprice: {
-    textDecorationLine: 'line-through',
     fontSize: 20,
-    color: '#C5C5C5',
 
     marginLeft: 10,
   },
