@@ -18,6 +18,7 @@ import Product from '../Screens/Product';
 import Detail from '../Screens/Detail';
 import NearMe from '../components/nearMe';
 import ProductDescribe from '../Screens/ProductDescribe';
+import Collections from '../Screens/Collections';
 
 const Bottom = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -89,6 +90,7 @@ const AppStack = () => {
         <Stack.Screen name="Product" component={Product} />
         <Stack.Screen name="Detail" component={Detail} />
         <Stack.Screen name="ProductDescribe" component={ProductDescribe} />
+        <Stack.Screen name="Collections" component={Collections} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -14,7 +14,7 @@ import {useNavigation} from '@react-navigation/native';
 import {getRate} from '../services/API';
 import {getImage} from '../ultis/index';
 
-const Rate = props => {
+const rate = props => {
   const navigation = useNavigation();
   const [dataRate, setRate] = useState();
   useEffect(() => {
@@ -23,8 +23,10 @@ const Rate = props => {
       console.log('result', result.data.reply.delivery_infos);
       setRate(result.data.reply.delivery_infos);
     };
-
     getApiProduct();
+    return () => {
+      setRate({});
+    };
   }, []);
   return (
     <View>
@@ -37,8 +39,9 @@ const Rate = props => {
               activeOpacity={0.7}
               onPress={() =>
                 navigation.navigate('Detail', {
-                  id: item.id,
+                  id: item.delivery_id,
                   idScreen: props.idScreen,
+                  service_type: item.service_type,
                 })
               }>
               <View>
@@ -81,20 +84,6 @@ const Rate = props => {
                     <Text>0.6km</Text>
                   </View>
                 </View>
-                {/* <View
-                  style={{flexDirection: 'row', marginLeft: 15, marginTop: 5}}>
-                  {NearMeData.filter(e => e.id == item.id).map(e =>
-                    e.sale.map(a => {
-                      if (a.sale1) {
-                        return (
-                          <View style={styles.boxsale} key={a.id}>
-                            <Text style={styles.sale}>{a.sale1}</Text>
-                          </View>
-                        );
-                      }
-                    }),
-                  )}
-                </View> */}
                 <TouchableOpacity
                   style={{marginLeft: 15, flexDirection: 'row'}}>
                   <Text style={styles.location}>{item.location_url}</Text>
@@ -115,7 +104,7 @@ const Rate = props => {
   );
 };
 
-export default Rate;
+export default rate;
 
 const styles = StyleSheet.create({
   boxBtn: {

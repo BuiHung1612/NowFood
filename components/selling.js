@@ -23,8 +23,10 @@ const selling = props => {
       //console.log('result', result.data.reply.delivery_infos);
       setSelling(result.data.reply.delivery_infos);
     };
-
     getApiProduct();
+    return () => {
+      setSelling({});
+    };
   }, []);
   return (
     <View>
@@ -39,6 +41,7 @@ const selling = props => {
                 navigation.navigate('Detail', {
                   id: item.delivery_id,
                   idScreen: props.idScreen,
+                  service_type: item.service_type,
                 })
               }>
               <View>

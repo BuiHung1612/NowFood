@@ -1,6 +1,7 @@
 const initState = {
   id: '',
   id_Product: '',
+  service_type: '',
   dish_type_id: '',
 };
 export default function shopReducer(state = initState, action) {
@@ -17,6 +18,11 @@ export default function shopReducer(state = initState, action) {
         ...state,
         id_Product: action.data.id_Product,
         dish_type_id: action.data.dish_type_id,
+      };
+    case 'service_type':
+      return {
+        ...state,
+        service_type: action.data.service_type,
       };
 
     default:

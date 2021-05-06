@@ -13,19 +13,23 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import {useNavigation} from '@react-navigation/native';
 import {getNearMe} from '../services/API';
 import {getImage} from '../ultis/index';
-
+import {useDispatch, useSelector} from 'react-redux';
 const NearMe = props => {
   const navigation = useNavigation();
   const [DataNearMe, setNearMe] = useState();
+  const dispatch = useDispatch();
   useEffect(() => {
     const getApiProduct = async () => {
       const result = await getNearMe();
       //console.log('result', result.data.reply.delivery_infos);
       setNearMe(result.data.reply.delivery_infos);
-      //console.log(DataNearMe);
+      // console.log(DataNearMe);
     };
 
     getApiProduct();
+    return () => {
+      setNearMe({}); // React useEffect causing: Can't perform a React state update on an unmounted component
+    };
   }, []);
   return (
     <View>
@@ -40,6 +44,7 @@ const NearMe = props => {
                 navigation.navigate('Detail', {
                   id: item.delivery_id,
                   idScreen: props.idScreen,
+                  service_type: item.service_type,
                 })
               }>
               <View>

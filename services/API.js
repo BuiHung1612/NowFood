@@ -101,3 +101,43 @@ export const getCart = delivery_id =>
   instance.get(
     `/api/dish/get_delivery_dishes?id_type=2&request_id=${delivery_id}`,
   );
+export const getCollection = params =>
+  instance.post('https://gappapi.deliverynow.vn/api/collection/get_infos', {
+    ids: [
+      12156,
+      13374,
+      13843,
+      13863,
+      13853,
+      13850,
+      13849,
+      13736,
+      11703,
+      10888,
+      5736,
+      9842,
+      9788,
+      12440,
+      12441,
+    ],
+  });
+export const getListCollection = params =>
+  instance.post('https://gappapi.deliverynow.vn/api/collection/get_infos', {
+    ids: [
+      12156,
+      13374,
+      13843,
+      13863,
+      13853,
+      13850,
+      13849,
+      13736,
+      11703,
+      10888,
+      5736,
+      9842,
+      9788,
+      12440,
+      12441,
+    ],
+  });

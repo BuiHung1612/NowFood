@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   FlatList,
   Image,
@@ -13,36 +13,53 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import NearMe from '../components/nearMe';
 import Selling from '../components/selling';
+import {getNearMe} from '../services/API';
+import Rate from '../components/Rate';
+import Order from '../components/order';
+import {useDispatch, useSelector} from 'react-redux';
+import ShipNow from '../components/ShipNow';
 const Product = ({navigation, route}) => {
-  const {id} = route.params;
+  const {idShop} = route.params;
+  const dispatch = useDispatch();
   const [screen, setscreen] = useState('suggest');
   const Footer = () => {
     if (screen == 'suggest') {
-      return <NearMe />;
+      return <Rate idScreen="3" />;
     }
     if (screen == 'nearme') {
-      return <Selling />;
+      return <Selling idScreen="2" />;
     }
     if (screen == 'orderalot') {
-      return <NearMe />;
+      return <ShipNow idScreen="4" />;
     }
     if (screen == 'decreased') {
-      return <Selling />;
+      return <NearMe idScreen="1" />;
     }
   };
+  const [dataShop, setDataShop] = useState();
+  useEffect(() => {
+    const getApiProduct = async () => {
+      const result = await getNearMe();
+      console.log('result', result.data.reply.delivery_infos);
+      setDataShop(result.data.reply.delivery_infos);
+      console.log(dataShop);
+    };
+
+    getApiProduct();
+  }, []);
 
   return (
     <View style={styles.container}>
       <FlatList
         ListFooterComponent={Footer}
         initialNumToRender={20}
-        data={FlatlistBtn}
+        data={dataShop}
         renderItem={({item}) => {
-          if (item.id === id) {
+          if (item.delivery_id == idShop)
             return (
               <View style={{}}>
                 <ImageBackground
-                  source={{uri: item.url}}
+                  source={{uri: item.photos?.[10].value}}
                   style={styles.imgbanner}>
                   <TouchableOpacity onPress={() => navigation.navigate('Home')}>
                     <Ionicons
@@ -62,8 +79,8 @@ const Product = ({navigation, route}) => {
                   </TouchableOpacity>
                 </ImageBackground>
                 <View style={{marginLeft: 10, marginTop: 10}}>
-                  <Text style={styles.subtitle}>{item.subtitle}</Text>
-                  <Text style={styles.describe}>{item.describe}</Text>
+                  <Text style={styles.subtitle}>{item.name}</Text>
+                  <Text style={styles.describe}>{item.categories?.[0]}</Text>
                 </View>
                 <View style={styles.boxscreen}>
                   <TouchableOpacity onPress={() => setscreen('suggest')}>
@@ -85,7 +102,7 @@ const Product = ({navigation, route}) => {
                       style={[
                         styles.scname,
                         {
-                          fontWeight: screen == 'suggest' ? 'bold' : '500',
+                          fontWeight: screen == 'nearme' ? 'bold' : '500',
                           borderBottomWidth: 3,
                           borderBottomColor:
                             screen == 'nearme' ? '#EE3331' : '#fff',
@@ -99,7 +116,7 @@ const Product = ({navigation, route}) => {
                       style={[
                         styles.scname,
                         {
-                          fontWeight: screen == 'suggest' ? 'bold' : '500',
+                          fontWeight: screen == 'orderalot' ? 'bold' : '500',
                           borderBottomWidth: 3,
                           borderBottomColor:
                             screen == 'orderalot' ? '#EE3331' : '#fff',
@@ -113,7 +130,7 @@ const Product = ({navigation, route}) => {
                       style={[
                         styles.scname,
                         {
-                          fontWeight: screen == 'suggest' ? 'bold' : '500',
+                          fontWeight: screen == 'decreased' ? 'bold' : '500',
                           borderBottomWidth: 3,
                           borderBottomColor:
                             screen == 'decreased' ? '#EE3331' : '#fff',
@@ -125,7 +142,6 @@ const Product = ({navigation, route}) => {
                 </View>
               </View>
             );
-          }
         }}
       />
     </View>

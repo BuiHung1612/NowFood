@@ -13,20 +13,30 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Order from '../components/order';
 import Comment from '../components/comment';
 import Information from '../components/Infomation';
-import {getNearMe, getSelling, getShop} from '../services/API';
+import {
+  getNearMe,
+  getRate,
+  getSelling,
+  getShipNow,
+  getShop,
+} from '../services/API';
 import {getImageShop, getImage} from '../ultis';
 import {useDispatch, useSelector} from 'react-redux';
 
 const Detail = ({route, navigation}) => {
-  const {id, idScreen} = route.params;
+  const {id, idScreen, service_type} = route.params;
+  console.log(id, idScreen, service_type);
   const dispatch = useDispatch();
   const ToogleScreen = () => {
     if (idScreen == '1') return getNearMe();
     if (idScreen == '2') return getSelling();
+    if (idScreen == '3') return getRate();
+    if (idScreen == '4') return getShipNow();
   };
 
   useEffect(() => {
     dispatch({type: 'idShop', data: id});
+    dispatch({type: 'service_type', data: {service_type: service_type}});
   }, [id]);
 
   const [screen, setscreen] = useState('order');
@@ -54,10 +64,11 @@ const Detail = ({route, navigation}) => {
       <FlatList
         ListFooterComponent={Footer(id)}
         data={DataShop}
+        keyExtractor={item => item.delivery_id}
         renderItem={({item}) => {
           if (item.delivery_id == id)
             return (
-              <View>
+              <View key={item.delivery_id}>
                 <ImageBackground
                   source={{
                     uri: getImage(

@@ -13,6 +13,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import {useNavigation} from '@react-navigation/native';
 import {getShipNow} from '../services/API';
 import {getImage} from '../ultis/index';
+import {set} from 'react-native-reanimated';
 
 const ShipNow = props => {
   const navigation = useNavigation();
@@ -23,8 +24,10 @@ const ShipNow = props => {
       //   console.log('result', result.data.reply.delivery_infos);
       setNow(result.data.reply.delivery_infos);
     };
-
     getApiProduct();
+    return () => {
+      setNow({});
+    };
   }, []);
   return (
     <View>

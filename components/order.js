@@ -21,7 +21,7 @@ const order = props => {
   const idShop = props.id;
   console.log('idshop', idShop);
   const navigation = useNavigation();
-  const dishpatch = useDispatch();
+  const dispatch = useDispatch();
   //const data = useSelector(store => store.idShop.id);
   const [shopData, setShopData] = useState();
   //const [dish_type_id, setDish_type_id] = useState();
@@ -30,17 +30,32 @@ const order = props => {
       //const result = await getShop(data);
       const result = await getShop(idShop);
       setShopData(result.data.reply.menu_infos);
-      console.log(shopData);
+      console.log(result.data);
     };
 
     getApiShop();
   }, []);
+  const data = useSelector(store => store.idShop);
   const onClick = (id_Product, dishes_type_id) => () => {
-    dishpatch({
+    dispatch({
       type: 'idProduct',
       data: {id_Product: id_Product, dish_type_id: dishes_type_id},
     });
     navigation.navigate('ProductDescribe', {id: idShop});
+  };
+  const addCart = (id_Product, price, img, title, dish_type_id) => {
+    dispatch({
+      type: 'addCart',
+      data: {
+        idShop: idShop,
+        id_Product: id_Product,
+        dish_type_id: dish_type_id,
+        service_type: data.service_type,
+        price: price,
+        img: img,
+        title: title,
+      },
+    });
   };
   return (
     <View style={styles.container}>
@@ -129,16 +144,16 @@ const order = props => {
       <View style={{flex: 0.5, paddingTop: 20, paddingLeft: 20}}>
         <FlatList
           data={shopData}
-          keyExtractor={item => item.id}
+          keyExtractor={(item, index) => index}
           renderItem={({item}) => {
             return (
-              <View>
+              <View key={item.id}>
                 {/* {setDish_type_id(item.dish_type_id)} */}
                 <Text
                   style={{fontSize: 18, fontWeight: 'bold', color: '#676767'}}>
                   {item.dish_type_name}
                 </Text>
-                {item.dishes.map(e => {
+                {item.dishes.map((e, i) => {
                   return (
                     <TouchableOpacity
                       key={e.id}
@@ -150,12 +165,13 @@ const order = props => {
                       }}
                       onPress={onClick(e.id, item.dish_type_id)}>
                       <Image
+                        key={e.id}
                         source={{
                           uri: e.photos?.[0].value,
                         }}
                         style={styles.image1}
                       />
-                      <View style={{left: 15, width: '65%'}}>
+                      <View key={e.id + 1} style={{left: 15, width: '65%'}}>
                         <Text style={{fontSize: 18}}>{e.name}</Text>
                         <Text
                           style={{
@@ -200,7 +216,16 @@ const order = props => {
                             </Text>
                           </View>
 
-                          <TouchableOpacity>
+                          <TouchableOpacity
+                            onPress={() =>
+                              addCart(
+                                e.id,
+                                e.price.text,
+                                e.photos?.[4].value,
+                                e.name,
+                                item.dish_type_id,
+                              )
+                            }>
                             <Ionicons
                               name="add-circle"
                               size={35}

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Dimensions,
   FlatList,
@@ -22,8 +22,12 @@ import NearMe from '../components/nearMe';
 import Selling from '../components/selling';
 import Rate from '../components/Rate';
 import ShipNow from '../components/ShipNow';
+import {useDispatch, useSelector} from 'react-redux';
+import {getCollection} from '../services/API';
 const Home = ({navigation}) => {
   const [SC, setScreen] = useState('NearMe');
+  const dispatch = useDispatch();
+  const [collections, setCollections] = useState();
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
   const ToggleScreen = () => {
@@ -72,9 +76,7 @@ const Home = ({navigation}) => {
             style={{width: 100, marginLeft: 5}}
             key={e.id}
             onPress={() => {
-              // if(e.id==1)
-
-              return navigation.navigate('Product', {id: e.id});
+              return navigation.navigate('Product', {idShop: e.idShop});
             }}>
             <View style={styles.btn}>
               <Image
@@ -98,7 +100,7 @@ const Home = ({navigation}) => {
             style={{width: 100, marginLeft: 5}}
             key={e.id}
             onPress={() => {
-              return navigation.navigate('Product', {id: e.id});
+              return navigation.navigate('Product', {idShop: e.idShop});
             }}>
             <View style={styles.btn}>
               <Image
@@ -117,6 +119,17 @@ const Home = ({navigation}) => {
     });
   };
 
+  useEffect(() => {
+    const listCollection = async () => {
+      const result = await getCollection();
+      setCollections(result.data.reply.collections);
+      //console.log(result.data.reply.collections);
+    };
+    listCollection();
+    return () => {
+      setCollections({});
+    };
+  }, []);
   return (
     <View style={styles.container}>
       <FlatList
@@ -218,7 +231,9 @@ const Home = ({navigation}) => {
                     }}>
                     Bộ sưu tập
                   </Text>
-                  <TouchableOpacity style={{flexDirection: 'row'}}>
+                  <TouchableOpacity
+                    style={{flexDirection: 'row'}}
+                    onPress={() => navigation.navigate('Collections')}>
                     <Text
                       style={{
                         fontSize: 16,
@@ -239,15 +254,21 @@ const Home = ({navigation}) => {
                 </View>
                 <View>
                   <FlatList
-                    data={Collection}
+                    data={collections}
                     showsHorizontalScrollIndicator={false}
                     horizontal
                     renderItem={({item}) => {
                       return (
-                        <View style={{marginLeft: 10}} key={item.id}>
+                        <TouchableOpacity
+                          style={{marginLeft: 10}}
+                          key={item.id}>
                           <Image
-                            source={{uri: item.url}}
-                            style={{width: 160, height: 170}}
+                            source={{uri: item.photos?.[0].value}}
+                            style={{
+                              width: item.photos?.[0].width - 100,
+                              height: item.photos?.[0].height - 20,
+                            }}
+                            resizeMode="contain"
                           />
                           <Text
                             style={{
@@ -257,9 +278,9 @@ const Home = ({navigation}) => {
                               textAlign: 'center',
                               marginBottom: 10,
                             }}>
-                            {item.title}
+                            {item.name}
                           </Text>
-                        </View>
+                        </TouchableOpacity>
                       );
                     }}
                     keyExtractor={item => item.id}
