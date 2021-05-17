@@ -22,15 +22,13 @@ const order = props => {
   console.log('idshop', idShop);
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  //const data = useSelector(store => store.idShop.id);
+  const idScreen = useSelector(store => store.Screen.idScreen);
+  console.log(idScreen);
   const [shopData, setShopData] = useState();
-  //const [dish_type_id, setDish_type_id] = useState();
   useEffect(() => {
     const getApiShop = async () => {
-      //const result = await getShop(data);
       const result = await getShop(idShop);
       setShopData(result.data.reply.menu_infos);
-      console.log(result.data);
     };
 
     getApiShop();
@@ -54,6 +52,7 @@ const order = props => {
         price: price,
         img: img,
         title: title,
+        idScreen: idScreen,
       },
     });
   };
@@ -69,13 +68,13 @@ const order = props => {
               style={styles.image}
             />
           </View>
-          <View style={{width: '65%', paddingLeft: 10}}>
-            <Text style={{fontSize: 16, fontWeight: 'bold', left: 10}}>
+          <View style={{width: '60%', paddingLeft: 10}}>
+            <Text style={{fontSize: 15, fontWeight: 'bold', left: 10}}>
               Giao hàng tiêu chuẩn
             </Text>
-            <Text style={{fontSize: 16, left: 10}}>Dự kiến giao lúc 09:55</Text>
+            <Text style={{fontSize: 15, left: 10}}>Dự kiến giao lúc 09:55</Text>
           </View>
-          <TouchableOpacity style={{width: '15%'}}>
+          <TouchableOpacity style={{width: '25%'}}>
             <Text style={{color: '#347EEF', fontWeight: 'bold', top: 5}}>
               Thay đổi
             </Text>
@@ -92,11 +91,11 @@ const order = props => {
               style={styles.image}
             />
           </View>
-          <View style={{width: '65%', paddingLeft: 10}}>
-            <Text style={{fontSize: 16, fontWeight: 'bold', left: 10}}>
+          <View style={{width: '60%', paddingLeft: 10}}>
+            <Text style={{fontSize: 15, fontWeight: 'bold', left: 10}}>
               Đặt nhóm
             </Text>
-            <Text style={{fontSize: 16, left: 10}}>Chia tiền nhanh chóng</Text>
+            <Text style={{fontSize: 15, left: 10}}>Chia tiền nhanh chóng</Text>
           </View>
           <TouchableOpacity style={{width: '15%'}}>
             <Text
@@ -141,7 +140,7 @@ const order = props => {
           </View>
         </View>
       </View>
-      <View style={{flex: 0.5, paddingTop: 20, paddingLeft: 20}}>
+      <View style={{flex: 0.5, paddingTop: 20, paddingLeft: 10}}>
         <FlatList
           data={shopData}
           keyExtractor={(item, index) => index}
@@ -157,12 +156,7 @@ const order = props => {
                   return (
                     <TouchableOpacity
                       key={e.id}
-                      style={{
-                        flexDirection: 'row',
-                        borderBottomColor: '#EFEFEF',
-                        borderBottomWidth: 1,
-                        height: 150,
-                      }}
+                      style={styles.btnContainer}
                       onPress={onClick(e.id, item.dish_type_id)}>
                       <Image
                         key={e.id}
@@ -172,10 +166,10 @@ const order = props => {
                         style={styles.image1}
                       />
                       <View key={e.id + 1} style={{left: 15, width: '65%'}}>
-                        <Text style={{fontSize: 18}}>{e.name}</Text>
+                        <Text style={{fontSize: 17}}>{e.name}</Text>
                         <Text
                           style={{
-                            fontSize: 16,
+                            fontSize: 15,
                             color: '#959595',
                             marginTop: 5,
                           }}>
@@ -183,7 +177,7 @@ const order = props => {
                         </Text>
                         <Text
                           style={{
-                            fontSize: 16,
+                            fontSize: 15,
                             color: '#959595',
                             marginTop: 6,
                           }}>
@@ -198,7 +192,7 @@ const order = props => {
                             <Text
                               style={{
                                 marginTop: 6,
-                                fontSize: 18,
+                                fontSize: 17,
                                 fontWeight: 'bold',
                               }}>
                               {e.price.text}
@@ -207,7 +201,7 @@ const order = props => {
                               style={{
                                 marginTop: 6,
                                 marginLeft: 5,
-                                fontSize: 18,
+                                fontSize: 17,
                                 fontWeight: 'bold',
                                 color: '#9B9B9B',
                                 textDecorationLine: 'line-through',
@@ -224,11 +218,12 @@ const order = props => {
                                 e.photos?.[4].value,
                                 e.name,
                                 item.dish_type_id,
+                                idScreen,
                               )
                             }>
                             <Ionicons
                               name="add-circle"
-                              size={35}
+                              size={30}
                               color="#EA3534"
                             />
                           </TouchableOpacity>
@@ -257,29 +252,36 @@ const styles = StyleSheet.create({
     flex: 0.3,
   },
   image: {
-    width: 50,
-    height: 50,
+    width: 45,
+    height: 45,
     borderRadius: 30,
     borderWidth: 2,
     borderColor: 'red',
   },
   box: {
     flexDirection: 'row',
-    height: 75,
+    height: 65,
     paddingTop: 8,
     borderBottomWidth: 1,
     borderBottomColor: '#F7F9FA',
     paddingBottom: 7,
   },
   salecode: {
-    fontSize: 17,
+    fontSize: 15,
     marginLeft: 7,
     top: 4,
-    width: '75%',
+    width: '70%',
   },
   image1: {
-    width: 120,
-    height: 120,
+    width: 100,
+    height: 100,
     marginTop: 10,
+  },
+  btnContainer: {
+    flexDirection: 'row',
+    borderBottomColor: '#EFEFEF',
+    borderBottomWidth: 1,
+    height: 130,
+    width: Dimensions.get('window').width * 0.97,
   },
 });

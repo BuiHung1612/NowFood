@@ -52,7 +52,7 @@ const Home = ({navigation}) => {
         <Image
           key={e.id}
           source={{uri: e.url}}
-          style={{width: '100%', height: 150, resizeMode: 'cover'}}
+          style={{width: '100%', height: '100%', resizeMode: 'cover'}}
         />
       );
     });
@@ -63,7 +63,7 @@ const Home = ({navigation}) => {
         <Image
           key={i}
           source={{uri: e.url}}
-          style={{width: '95%', height: 130, resizeMode: 'cover'}}
+          style={{width: '95%', height: 120, resizeMode: 'cover'}}
         />
       );
     });
@@ -73,7 +73,7 @@ const Home = ({navigation}) => {
       if (e.id < 9) {
         return (
           <TouchableOpacity
-            style={{width: 100, marginLeft: 5}}
+            style={{width: 80, marginLeft: 5}}
             key={e.id}
             onPress={() => {
               return navigation.navigate('Product', {idShop: e.idShop});
@@ -81,10 +81,10 @@ const Home = ({navigation}) => {
             <View style={styles.btn}>
               <Image
                 source={{uri: e.url}}
-                style={{width: 55, height: 55, borderRadius: 15}}
+                style={{width: 45, height: 45, borderRadius: 15}}
               />
             </View>
-            <Text style={{width: 80, textAlign: 'center', fontSize: 15}}>
+            <Text style={{width: 80, textAlign: 'center', fontSize: 14}}>
               {e.title}
             </Text>
           </TouchableOpacity>
@@ -97,7 +97,7 @@ const Home = ({navigation}) => {
       if (e.id > 8 && e.id < 17) {
         return (
           <TouchableOpacity
-            style={{width: 100, marginLeft: 5}}
+            style={{marginLeft: 5, width: 80}}
             key={e.id}
             onPress={() => {
               return navigation.navigate('Product', {idShop: e.idShop});
@@ -105,11 +105,11 @@ const Home = ({navigation}) => {
             <View style={styles.btn}>
               <Image
                 source={{uri: e.url}}
-                style={{width: 55, height: 55, borderRadius: 15}}
+                style={{width: 45, height: 45, borderRadius: 15}}
               />
             </View>
             <Text
-              style={{width: 80, fontSize: 15, textAlign: 'center'}}
+              style={{width: 80, fontSize: 14, textAlign: 'center'}}
               numberOfLines={2}>
               {e.title}
             </Text>
@@ -133,8 +133,6 @@ const Home = ({navigation}) => {
   return (
     <View style={styles.container}>
       <FlatList
-        // onScroll={()=>navigation.setOptions({tabBarVisible:true})}
-
         ListHeaderComponent={() => {
           return (
             <View style={{flex: 0.17}}>
@@ -159,7 +157,7 @@ const Home = ({navigation}) => {
                       width: '87%',
                     }}
                     numberOfLines={1}>
-                    59b Ngõ 2 Phố Phạm Thận Duật,Mai Dịch,Cầu Giấy,Hà Nội{' '}
+                    59b Ngõ 2 Phố Phạm Thận Duật,Mai Dịch,Cầu Giấy,Hà Nội
                   </Text>
                   <Ionicons
                     name="chevron-forward-outline"
@@ -196,10 +194,15 @@ const Home = ({navigation}) => {
 
               <View style={styles.swipeBanner}>
                 <Swiper
-                  showsButtons={true}
+                  height={windowHeight * 0.18}
+                  width={windowWidth * 1}
+                  style={{
+                    backgroundColor: '#d8d8d8',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
                   autoplay
-                  autoplayTimeout={3}
-                  height={140}>
+                  autoplayTimeout={3}>
                   {ListImg()}
                 </Swiper>
               </View>
@@ -260,13 +263,17 @@ const Home = ({navigation}) => {
                     renderItem={({item}) => {
                       return (
                         <TouchableOpacity
-                          style={{marginLeft: 10}}
+                          style={{
+                            marginLeft: 10,
+                            marginTop: 5,
+                            marginBottom: 5,
+                          }}
                           key={item.id}>
                           <Image
                             source={{uri: item.photos?.[0].value}}
                             style={{
-                              width: item.photos?.[0].width - 100,
-                              height: item.photos?.[0].height - 20,
+                              width: item.photos?.[0].width - 140,
+                              height: item.photos?.[0].height - 50,
                             }}
                             resizeMode="contain"
                           />
@@ -333,14 +340,18 @@ const Home = ({navigation}) => {
                       return (
                         <View
                           style={{
-                            marginLeft: 10,
+                            marginLeft: 5,
                             width: 360,
                             flexDirection: 'row',
                           }}
                           key={item.id}>
                           <Image
                             source={{uri: item.url}}
-                            style={{width: 130, height: 110, borderRadius: 5}}
+                            style={{
+                              width: 130,
+                              height: 110,
+                              borderRadius: 5,
+                            }}
                           />
                           <View>
                             <Text
@@ -406,7 +417,7 @@ const Home = ({navigation}) => {
                 <Swiper
                   autoplay
                   autoplayTimeout={3}
-                  height={140}
+                  height={130}
                   style={{margin: 10}}>
                   {ListImg1()}
                 </Swiper>
@@ -414,32 +425,10 @@ const Home = ({navigation}) => {
 
               {/* dong gia 8k */}
               <View style={styles.collecion}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    marginTop: 7,
-                    marginLeft: 10,
-                  }}>
-                  <Text
-                    style={{
-                      fontWeight: 'bold',
-                      fontFamily: 'Lato-Bold',
-                      fontSize: 19,
-                    }}>
-                    Đồng giá 8k
-                  </Text>
+                <View style={styles.headerItem}>
+                  <Text style={styles.headerItemText1}>Đồng giá 8k</Text>
                   <TouchableOpacity style={{flexDirection: 'row'}}>
-                    <Text
-                      style={{
-                        fontSize: 16,
-                        fontWeight: '500',
-                        fontFamily: 'Lato-Regular',
-                        color: '#848484',
-                        marginTop: 3,
-                      }}>
-                      Xem thêm
-                    </Text>
+                    <Text style={styles.headerItemText2}>Xem thêm</Text>
                     <Ionicons
                       name="chevron-forward-outline"
                       size={23}
@@ -455,19 +444,15 @@ const Home = ({navigation}) => {
                     showsHorizontalScrollIndicator={false}
                     renderItem={({item}) => {
                       return (
-                        <View style={{marginLeft: 10}}>
+                        <View
+                          style={{
+                            marginLeft: 10,
+                          }}>
                           <Image
                             source={{uri: item.url}}
-                            style={{width: 160, height: 170}}
+                            style={styles.imgItem}
                           />
-                          <Text
-                            style={{
-                              fontSize: 16,
-                              fontWeight: '500',
-                              fontFamily: 'Lato-Regularp',
-                              textAlign: 'center',
-                              marginBottom: 10,
-                            }}>
+                          <Text numberOfLines={1} style={styles.textItem}>
                             {item.title}
                           </Text>
                         </View>
@@ -477,34 +462,14 @@ const Home = ({navigation}) => {
                   />
                 </View>
               </View>
-
+              {/* mọi người vừa ăn gì */}
               <View style={styles.collecion}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    marginTop: 7,
-                    marginLeft: 10,
-                  }}>
-                  <Text
-                    style={{
-                      fontWeight: 'bold',
-                      fontFamily: 'Lato-Bold',
-                      fontSize: 19,
-                    }}>
+                <View style={styles.headerItem}>
+                  <Text style={styles.headerItemText1}>
                     Mọi người vừa ăn gì ?
                   </Text>
                   <TouchableOpacity style={{flexDirection: 'row'}}>
-                    <Text
-                      style={{
-                        fontSize: 16,
-                        fontWeight: '500',
-                        fontFamily: 'Lato-Regular',
-                        color: '#848484',
-                        marginTop: 3,
-                      }}>
-                      Xem thêm
-                    </Text>
+                    <Text style={styles.headerItemText2}>Xem thêm</Text>
                     <Ionicons
                       name="chevron-forward-outline"
                       size={23}
@@ -523,16 +488,9 @@ const Home = ({navigation}) => {
                         <View style={{marginLeft: 10}}>
                           <Image
                             source={{uri: item.url}}
-                            style={{width: 160, height: 170}}
+                            style={styles.imgItem}
                           />
-                          <Text
-                            style={{
-                              fontSize: 16,
-                              fontWeight: '500',
-                              fontFamily: 'Lato-Regularp',
-                              textAlign: 'center',
-                              marginBottom: 10,
-                            }}>
+                          <Text numberOfLines={1} style={styles.textItem}>
                             {item.title}
                           </Text>
                         </View>
@@ -542,34 +500,14 @@ const Home = ({navigation}) => {
                   />
                 </View>
               </View>
-
+              {/* freeship extra */}
               <View style={styles.collecion}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    marginTop: 7,
-                    marginLeft: 10,
-                  }}>
-                  <Text
-                    style={{
-                      fontWeight: 'bold',
-                      fontFamily: 'Lato-Bold',
-                      fontSize: 19,
-                    }}>
+                <View style={styles.headerItem}>
+                  <Text style={styles.headerItemText1}>
                     Freeship Xtra + Giảm 50%
                   </Text>
                   <TouchableOpacity style={{flexDirection: 'row'}}>
-                    <Text
-                      style={{
-                        fontSize: 16,
-                        fontWeight: '500',
-                        fontFamily: 'Lato-Regular',
-                        color: '#848484',
-                        marginTop: 3,
-                      }}>
-                      Xem thêm
-                    </Text>
+                    <Text style={styles.headerItemText2}>Xem thêm</Text>
                     <Ionicons
                       name="chevron-forward-outline"
                       size={23}
@@ -588,16 +526,9 @@ const Home = ({navigation}) => {
                         <View style={{marginLeft: 10}}>
                           <Image
                             source={{uri: item.url}}
-                            style={{width: 160, height: 170}}
+                            style={styles.imgItem}
                           />
-                          <Text
-                            style={{
-                              fontSize: 16,
-                              fontWeight: '500',
-                              fontFamily: 'Lato-Regularp',
-                              textAlign: 'center',
-                              marginBottom: 10,
-                            }}>
+                          <Text numberOfLines={1} style={styles.textItem}>
                             {item.title}
                           </Text>
                         </View>
@@ -708,8 +639,7 @@ const Home = ({navigation}) => {
                   borderTopColor: '#F8F9FB',
                   borderTopWidth: 2,
                   paddingTop: 6,
-                  paddingLeft: 13,
-                  flex: 0.5,
+                  height: 14 * 111,
                 }}>
                 <ToggleScreen />
               </View>
@@ -742,16 +672,16 @@ const styles = StyleSheet.create({
   },
   swipeBanner: {
     marginTop: 5,
-    backgroundColor: '#D8D8D8',
+    backgroundColor: '#F2F2F2',
   },
   FlatlistBtn: {
-    height: 250,
+    height: 225,
     borderBottomWidth: 10,
     borderBottomColor: '#E6E6E6',
   },
   btn: {
-    width: 60,
-    height: 60,
+    width: 50,
+    height: 50,
     backgroundColor: '#fff',
     borderRadius: 15,
     borderWidth: 0.3,
@@ -769,18 +699,46 @@ const styles = StyleSheet.create({
     borderBottomColor: '#E6E6E6',
   },
   flatlistdanhmuc: {
-    height: 130,
+    height: 110,
+  },
+  headerItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 7,
+    marginLeft: 10,
+  },
+  headerItemText1: {
+    fontWeight: 'bold',
+    fontFamily: 'Lato-Bold',
+    fontSize: 19,
+  },
+  headerItemText2: {
+    fontSize: 16,
+    fontWeight: '500',
+    fontFamily: 'Lato-Regular',
+    color: '#848484',
+    marginTop: 3,
   },
   imgbtn: {
-    width: 70,
-    height: 70,
+    width: 55,
+    height: 55,
     borderRadius: 40,
+  },
+  imgItem: {width: 130, height: 130, marginTop: 5},
+  textItem: {
+    fontSize: 16,
+    fontWeight: '500',
+    fontFamily: 'Lato-Regularp',
+    textAlign: 'center',
+    marginBottom: 10,
+    marginTop: 5,
+    width: 120,
   },
   btnitem1: {
     backgroundColor: '#F4F3F7',
     borderRadius: 40,
-    width: 80,
-    height: 80,
+    width: 65,
+    height: 65,
     borderWidth: 2,
     borderColor: 'red',
     justifyContent: 'center',

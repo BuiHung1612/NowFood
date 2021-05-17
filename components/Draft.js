@@ -14,16 +14,10 @@ const windowHeight = Dimensions.get('window').height;
 import {useDispatch, useSelector} from 'react-redux';
 import Recent from '../data/Recent';
 import Services from './Services';
-import {
-  getCart,
-  getNearMe,
-  getRate,
-  getSelling,
-  getShipNow,
-  getShop,
-} from '../services/API';
+import {useNavigation} from '@react-navigation/native';
 const Draft = () => {
   const data = useSelector(store => store.cartReducer);
+  const navigation = useNavigation();
   console.log('data', data);
   const dispatch = useDispatch();
   const [text, setText] = useState('Dịch vụ');
@@ -72,17 +66,18 @@ const Draft = () => {
         data={data}
         keyExtractor={(item, index) => index}
         renderItem={({item}) => {
-          if (item.id_Product != '')
-            // item.dishes.map(e => {
-            //   if (
-            //     data.id_Product.find(id_Product => id_Product == e.id) &&
-            //     data.dish_type_id.find(
-            //       dish_type_id => dish_type_id == item.dish_type_id,
-            //     ) &&
-            //     idService == data.service_type
-            //   )
+          if (item.service_type == idService)
             return (
-              <TouchableOpacity style={styles.btn} activeOpacity={0.7}>
+              <TouchableOpacity
+                style={styles.btn}
+                activeOpacity={0.7}
+                onPress={() =>
+                  navigation.navigate('Detail', {
+                    id: item.idShop,
+                    idScreen: item.idScreen,
+                    service_type: item.service_type,
+                  })
+                }>
                 <View>
                   <Text
                     style={{
@@ -138,14 +133,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   text1: {
-    fontSize: 17,
+    fontSize: 15,
   },
   image: {
-    width: 120,
-    height: 120,
+    width: Dimensions.get('window').width * 0.23,
+    height: Dimensions.get('window').height * 0.13,
   },
   btn: {
-    height: 170,
+    height: Dimensions.get('window').height * 0.2,
     alignItems: 'center',
     paddingLeft: 20,
     flexDirection: 'row',

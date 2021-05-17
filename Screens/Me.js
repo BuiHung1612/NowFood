@@ -8,6 +8,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Dimensions,
+  Alert,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -33,13 +34,13 @@ const Me = ({navigation}) => {
                 'https://i.pinimg.com/564x/a8/f7/cf/a8f7cf02e5ffaf226068108a42d07f07.jpg',
             }}
             style={styles.ImageBackground}>
-            <Text style={{fontSize: 20, top: -40, fontWeight: 'bold'}}>
+            <Text style={{fontSize: 16, top: -10, fontWeight: 'bold'}}>
               Tôi
             </Text>
             <Image
               source={{
                 uri:
-                  'https://scontent.fhan3-1.fna.fbcdn.net/v/t1.6435-9/148889733_2804212123228229_1584969750114084438_n.jpg?_nc_cat=110&ccb=1-3&_nc_sid=174925&_nc_ohc=49a0EzaNUPUAX8LE3Z6&_nc_ht=scontent.fhan3-1.fna&oh=3f46fd7ebff5b387f6840abcc2dc6ecc&oe=60A71607',
+                  'https://scontent.fhan3-1.fna.fbcdn.net/v/t1.6435-9/148889733_2804212123228229_1584969750114084438_n.jpg?_nc_cat=110&ccb=1-3&_nc_sid=174920&_nc_ohc=49a0EzaNUPUAX8LE3Z6&_nc_ht=scontent.fhan3-1.fna&oh=3f46fd7ebff5b387f6840abcc2dc6ecc&oe=60A71607',
               }}
               style={styles.userImg}
             />
@@ -57,26 +58,26 @@ const Me = ({navigation}) => {
             <TouchableOpacity style={styles.btn}>
               <Ionicons
                 name="pricetag-outline"
-                size={25}
+                size={20}
                 color="#000"
                 style={{width: '10%'}}
               />
-              <Text style={{width: '80%', fontSize: 18}}>Ví Voucher</Text>
-              <Ionicons name="chevron-forward-outline" size={25} color="#000" />
+              <Text style={{width: '80%', fontSize: 16}}>Ví Voucher</Text>
+              <Ionicons name="chevron-forward-outline" size={20} color="#000" />
             </TouchableOpacity>
             <TouchableOpacity style={styles.btn}>
               <Fontisto
                 name="shopify"
-                size={25}
+                size={20}
                 color="#000"
                 style={{width: '10%'}}
               />
-              <Text style={{width: '67%', fontSize: 18}}>Shopee Xu</Text>
+              <Text style={{width: '67%', fontSize: 16}}>Shopee Xu</Text>
               <View style={{flexDirection: 'row'}}>
-                <Text style={{fontSize: 18}}>500 Xu</Text>
+                <Text style={{fontSize: 16}}>500 Xu</Text>
                 <Ionicons
                   name="chevron-forward-outline"
-                  size={25}
+                  size={20}
                   color="#000"
                 />
               </View>
@@ -84,22 +85,22 @@ const Me = ({navigation}) => {
             <TouchableOpacity style={styles.btn}>
               <Ionicons
                 name="card-outline"
-                size={25}
+                size={20}
                 color="#000"
                 style={{width: '10%'}}
               />
-              <Text style={{width: '80%', fontSize: 18}}>Thanh toán</Text>
-              <Ionicons name="chevron-forward-outline" size={25} color="#000" />
+              <Text style={{width: '80%', fontSize: 16}}>Thanh toán</Text>
+              <Ionicons name="chevron-forward-outline" size={20} color="#000" />
             </TouchableOpacity>
             <TouchableOpacity style={styles.btn}>
               <Ionicons
                 name="location-outline"
-                size={25}
+                size={20}
                 color="#000"
                 style={{width: '10%'}}
               />
-              <Text style={{width: '80%', fontSize: 18}}>Địa chỉ</Text>
-              <Ionicons name="chevron-forward-outline" size={25} color="#000" />
+              <Text style={{width: '80%', fontSize: 16}}>Địa chỉ</Text>
+              <Ionicons name="chevron-forward-outline" size={20} color="#000" />
             </TouchableOpacity>
           </View>
           {/* bạn bè, trung tâm trợ giúp */}
@@ -107,24 +108,24 @@ const Me = ({navigation}) => {
             <TouchableOpacity style={styles.btn}>
               <Ionicons
                 name="person-outline"
-                size={25}
+                size={20}
                 color="#000"
                 style={{width: '10%'}}
               />
-              <Text style={{width: '80%', fontSize: 18}}>Bạn bè</Text>
-              <Ionicons name="chevron-forward-outline" size={25} color="#000" />
+              <Text style={{width: '80%', fontSize: 16}}>Bạn bè</Text>
+              <Ionicons name="chevron-forward-outline" size={20} color="#000" />
             </TouchableOpacity>
             <TouchableOpacity style={styles.btn}>
               <Ionicons
                 name="help-circle-outline"
-                size={25}
+                size={20}
                 color="#000"
                 style={{width: '10%'}}
               />
-              <Text style={{width: '80%', fontSize: 18}}>
+              <Text style={{width: '80%', fontSize: 16}}>
                 Trung tâm trợ giúp
               </Text>
-              <Ionicons name="chevron-forward-outline" size={25} color="#000" />
+              <Ionicons name="chevron-forward-outline" size={20} color="#000" />
             </TouchableOpacity>
           </View>
           {/* ứng dụng cho chủ quán */}
@@ -132,14 +133,14 @@ const Me = ({navigation}) => {
             <TouchableOpacity style={styles.btn}>
               <Entypo
                 name="shop"
-                size={25}
+                size={20}
                 color="#000"
                 style={{width: '10%'}}
               />
-              <Text style={{width: '80%', fontSize: 18}}>
+              <Text style={{width: '80%', fontSize: 16}}>
                 Ứng dụng cho chủ quán
               </Text>
-              <Ionicons name="chevron-forward-outline" size={25} color="#000" />
+              <Ionicons name="chevron-forward-outline" size={20} color="#000" />
             </TouchableOpacity>
           </View>
           {/* chính sách quy định, cài đặt */}
@@ -147,35 +148,47 @@ const Me = ({navigation}) => {
             <TouchableOpacity style={styles.btn}>
               <Ionicons
                 name="help-circle-outline"
-                size={25}
+                size={20}
                 color="#000"
                 style={{width: '10%'}}
               />
-              <Text style={{width: '80%', fontSize: 18}}>
+              <Text style={{width: '80%', fontSize: 16}}>
                 Chính sách quy định
               </Text>
-              <Ionicons name="chevron-forward-outline" size={25} color="#000" />
+              <Ionicons name="chevron-forward-outline" size={20} color="#000" />
             </TouchableOpacity>
             <TouchableOpacity style={styles.btn}>
               <Ionicons
                 name="settings-outline"
-                size={25}
+                size={20}
                 color="#000"
                 style={{width: '10%'}}
               />
-              <Text style={{width: '80%', fontSize: 18}}>Cài đặt</Text>
-              <Ionicons name="chevron-forward-outline" size={25} color="#000" />
+              <Text style={{width: '80%', fontSize: 16}}>Cài đặt</Text>
+              <Ionicons name="chevron-forward-outline" size={20} color="#000" />
             </TouchableOpacity>
             <TouchableOpacity style={styles.btn}>
               <Ionicons
                 name="information-circle-outline"
-                size={25}
+                size={20}
                 color="#000"
                 style={{width: '10%'}}
               />
-              <Text style={{width: '80%', fontSize: 18}}>Về Now</Text>
-              <Ionicons name="chevron-forward-outline" size={25} color="#000" />
+              <Text style={{width: '80%', fontSize: 16}}>Về Now</Text>
+              <Ionicons name="chevron-forward-outline" size={20} color="#000" />
             </TouchableOpacity>
+            <View style={styles.logOut}>
+              <TouchableOpacity
+                style={styles.btnLogOut}
+                activeOpacity={0.7}
+                onPress={() => navigation.navigate('Login')}>
+                <Text>Đăng Xuất</Text>
+              </TouchableOpacity>
+              <View style={{top: 8}}>
+                <Text style={styles.logOutText}>Phiên bản 4.41.22</Text>
+                <Text style={styles.logOutText}>A Foody Corporation</Text>
+              </View>
+            </View>
           </View>
         </View>
       </ScrollView>
@@ -192,13 +205,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   userImg: {
-    width: 130,
-    height: 130,
+    width: 110,
+    height: 110,
     borderRadius: 80,
   },
   header: {
-    flex: 0.4,
-    height: windowHeight * 0.35,
+    flex: 0.3,
+    height: windowHeight * 0.3,
   },
   ImageBackground: {
     flex: 1,
@@ -208,14 +221,14 @@ const styles = StyleSheet.create({
     borderBottomColor: '#F5F6FA',
   },
   userName: {
-    fontSize: 17,
+    fontSize: 16,
     marginTop: 5,
     fontWeight: 'bold',
   },
   checkIcon: {
     position: 'absolute',
-    right: 140,
-    top: 160,
+    right: 125,
+    top: 120,
   },
   btn: {
     flexDirection: 'row',
@@ -226,4 +239,27 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   boderBottom: {borderBottomWidth: 10, borderBottomColor: '#F5F6FA'},
+  logOut: {
+    height: windowHeight * 0.17,
+    borderBottomWidth: 1,
+    backgroundColor: '#F2F2F2',
+    borderBottomColor: '#F7F7F7',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  btnLogOut: {
+    width: windowWidth * 0.8,
+    height: windowHeight * 0.06,
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    borderWidth: 0.5,
+    borderColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  logOutText: {
+    fontSize: 14,
+    color: '#A4A4A4',
+    textAlign: 'center',
+  },
 });

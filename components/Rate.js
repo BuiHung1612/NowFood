@@ -6,6 +6,7 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
+  Dimensions,
 } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -44,7 +45,7 @@ const rate = props => {
                   service_type: item.service_type,
                 })
               }>
-              <View>
+              <View style={styles.ImgView}>
                 <Image
                   source={{
                     uri: getImage(
@@ -53,20 +54,14 @@ const rate = props => {
                       item.photos?.[0].value,
                     ),
                   }}
-                  style={{width: 110, height: 105}}
+                  style={{width: '85%', height: '90%'}}
                 />
               </View>
-              <View style={{}}>
+              <View style={{width: '70%'}}>
                 <Text style={styles.text} numberOfLines={2}>
                   {item.name}
                 </Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    marginLeft: 15,
-                    width: 260,
-                  }}>
+                <View style={styles.itemViewRight}>
                   <View style={{flexDirection: 'row'}}>
                     <Ionicons name="star" size={17} color="#FDC532" />
                     <Text style={{marginLeft: 5}}>{item.rating.avg}</Text>
@@ -84,8 +79,8 @@ const rate = props => {
                     <Text>0.6km</Text>
                   </View>
                 </View>
-                <TouchableOpacity
-                  style={{marginLeft: 15, flexDirection: 'row'}}>
+
+                <TouchableOpacity style={{flexDirection: 'row'}}>
                   <Text style={styles.location}>{item.location_url}</Text>
                   <Ionicons
                     name="chevron-forward-outline"
@@ -108,8 +103,8 @@ export default rate;
 
 const styles = StyleSheet.create({
   boxBtn: {
-    width: '100%',
-    height: 130,
+    width: Dimensions.get('window').width,
+    height: 110,
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderBottomColor: '#F6F6F6',
@@ -117,8 +112,7 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
   },
   text: {
-    width: '80%',
-    marginLeft: 15,
+    width: '95%',
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -139,5 +133,16 @@ const styles = StyleSheet.create({
   location: {
     color: '#3881E0',
     marginTop: 10,
+  },
+  ImgView: {
+    width: '30%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  itemViewRight: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '90%',
+    marginTop: 5,
   },
 });

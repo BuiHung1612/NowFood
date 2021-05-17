@@ -6,44 +6,98 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Dimensions,
 } from 'react-native';
+import ImgData from '../data/ImgData';
+import Swiper from 'react-native-swiper';
 import {getListCollection} from '../services/API';
-
-const Collections = () => {
+import Ionicons from 'react-native-vector-icons/Ionicons';
+const Collections = ({navigation}) => {
+  const windowWidth = Dimensions.get('window').width;
+  const windowHeight = Dimensions.get('window').height;
   const [collections, setCollections] = useState();
+  const ListImg = () => {
+    return ImgData.map((e, i) => {
+      return (
+        <Image
+          key={e.id}
+          source={{uri: e.url}}
+          style={{flex: 1, resizeMode: 'stretch'}}
+        />
+      );
+    });
+  };
+  const header = () => {
+    return (
+      <View style={{flex: 1}}>
+        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <Swiper
+            height={windowHeight * 0.18}
+            width={windowWidth * 0.95}
+            style={{
+              backgroundColor: '#d8d8d8',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            autoplay
+            autoplayTimeout={1}>
+            {ListImg()}
+          </Swiper>
+        </View>
+      </View>
+    );
+  };
+
   useEffect(() => {
     const getCollection = async () => {
       const result = await getListCollection();
       setCollections(result.data.reply.collections);
-      console.log(result.data.reply.collections);
+      // console.log('check');
+      // console.log('data1', result.data.reply.collections);
     };
     getCollection();
-    return () => {
-      //setCollections({});
-    };
+    // return () => {
+    //   setCollections({});
+    // };
   }, []);
+
   return (
     <View style={styles.container}>
+      <View style={styles.headertab}>
+        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+          <Ionicons name="chevron-back-outline" size={30} color="#000" />
+        </TouchableOpacity>
+        <Text style={{left: 150, fontSize: 17, fontWeight: 'bold'}}>
+          Bộ sưu tập
+        </Text>
+      </View>
       <View style={styles.flatListStyle}>
         <FlatList
+          ListHeaderComponent={header}
           data={collections}
           numColumns={2}
           key={Math.random(5)}
           renderItem={({item}) => {
             return (
               <TouchableOpacity
-                style={{width: '46%', height: 230, marginLeft: 15}}>
+                style={{
+                  width: windowWidth * 0.46,
+                  height: windowHeight * 0.25,
+                  marginLeft: 10,
+                }}>
                 <Image
                   source={{uri: item.photos?.[0].value}}
                   style={{
-                    flex: 1,
-                    width: null,
-                    height: null,
+                    width: '100%',
+                    height: 140,
 
-                    resizeMode: 'cover',
+                    // flex: 1,
+                    // width: null,
+                    // height: null,
+                    resizeMode: 'contain',
                   }}
                 />
-                <Text>{item.name}</Text>
+                <Text style={{fontSize: 17}}>{item.name}</Text>
               </TouchableOpacity>
             );
           }}
@@ -61,7 +115,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   flatListStyle: {
-    paddingTop: 15,
+    borderTopWidth: 0.5,
+
+    paddingBottom: 20,
     flex: 1,
+  },
+  headertab: {
+    flex: 0.08,
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

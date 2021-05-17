@@ -36,24 +36,39 @@ const Detail = ({route, navigation}) => {
 
   useEffect(() => {
     dispatch({type: 'idShop', data: id});
+    dispatch({type: 'Screen', data: idScreen});
     dispatch({type: 'service_type', data: {service_type: service_type}});
   }, [id]);
-
+  const [DataShop, setDataShop] = useState([]);
   const [screen, setscreen] = useState('order');
+  const [heart, setHeart] = useState(false);
   const Footer = id => {
-    console.log('idSHOPP', id);
+    //console.log('idSHOPP', id);
     if (screen == 'order') return <Order id={id} />;
     if (screen == 'comment') return <Comment />;
     if (screen == 'information') return <Information />;
   };
+  const clickHeart = (idShop, title, img, rating, promotion) => () => {
+    setHeart(!heart);
+    dispatch({
+      type: 'addShop',
+      data: {
+        idShop: idShop,
+        idScreen: idScreen,
+        title: title,
+        img: img,
+        rating: rating,
+        promotion: promotion,
+      },
+    });
+  };
 
-  const [DataShop, setDataShop] = useState([]);
   useEffect(() => {
     const getApiProduct = async () => {
       const result = await ToogleScreen();
 
       setDataShop(result.data.reply.delivery_infos);
-      console.log(DataShop);
+      console.log('dât', result.data.reply.delivery_infos);
     };
 
     getApiProduct();
@@ -66,7 +81,7 @@ const Detail = ({route, navigation}) => {
         data={DataShop}
         keyExtractor={item => item.delivery_id}
         renderItem={({item}) => {
-          if (item.delivery_id == id)
+          if (item.id == id)
             return (
               <View key={item.delivery_id}>
                 <ImageBackground
@@ -83,26 +98,34 @@ const Detail = ({route, navigation}) => {
                     activeOpacity={0.7}>
                     <Ionicons
                       name="chevron-back-outline"
-                      size={40}
+                      size={35}
                       color={'#fff'}
-                      style={{marginLeft: 15, marginTop: 13}}
+                      style={{marginLeft: 10, marginTop: 13}}
                     />
                   </TouchableOpacity>
                   <View style={{flexDirection: 'row', paddingRight: 15}}>
                     <TouchableOpacity activeOpacity={0.7}>
                       <Ionicons
                         name="search"
-                        size={35}
+                        size={30}
                         color={'#fff'}
                         style={{marginLeft: 15, marginTop: 13}}
                       />
                     </TouchableOpacity>
 
-                    <TouchableOpacity activeOpacity={0.7}>
+                    <TouchableOpacity
+                      activeOpacity={0.7}
+                      onPress={clickHeart(
+                        item.id,
+                        item.name,
+                        item.photos?.[10].value,
+                        item.rating.avg,
+                        item.promotion_groups,
+                      )}>
                       <Ionicons
-                        name="heart-outline"
-                        size={35}
-                        color={'#fff'}
+                        name={heart ? 'heart' : 'heart-outline'}
+                        size={30}
+                        color={heart ? 'red' : '#fff'}
                         style={{marginLeft: 15, marginTop: 13}}
                       />
                     </TouchableOpacity>
@@ -125,7 +148,7 @@ const Detail = ({route, navigation}) => {
                   }}>
                   <Text style={styles.title}>{item.name}</Text>
                   <View style={styles.rate}>
-                    <Ionicons name="star" size={23} color="#FEC629" />
+                    <Ionicons name="star" size={20} color="#FEC629" />
                     <Text style={styles.textrate}>
                       {item.rating.avg}({item.rating.total_review}+)
                     </Text>
@@ -207,14 +230,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   title: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: 'bold',
     width: '95%',
     marginLeft: 10,
   },
   rate: {
     flexDirection: 'row',
-    marginLeft: 20,
+    marginLeft: 10,
     marginTop: 10,
   },
   textrate: {
@@ -223,7 +246,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   textscreen: {
-    fontSize: 17,
+    fontSize: 16,
     paddingTop: 5,
     paddingBottom: 5,
     borderBottomWidth: 2,

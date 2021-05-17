@@ -19,6 +19,9 @@ import Detail from '../Screens/Detail';
 import NearMe from '../components/nearMe';
 import ProductDescribe from '../Screens/ProductDescribe';
 import Collections from '../Screens/Collections';
+import Login from '../Screens/Login';
+import HeaderTab from '../components/HeaderTab';
+import {Header} from 'react-native/Libraries/NewAppScreen';
 
 const Bottom = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -34,23 +37,23 @@ const BottomTab = () => {
           if (route.name === 'Home') {
             iconName = focused ? 'home' : 'home-outline';
             color = focused ? 'red' : '#6E6E6E';
-            return <Ionicons name={iconName} size={30} color={color} />;
+            return <Ionicons name={iconName} size={25} color={color} />;
           } else if (route.name === 'Order') {
             iconName = focused ? 'reader' : 'reader-outline';
             color = focused ? 'red' : '#6E6E6E';
-            return <Ionicons name={iconName} size={30} color={color} />;
+            return <Ionicons name={iconName} size={25} color={color} />;
           } else if (route.name === 'Saved') {
             iconName = focused ? 'heart' : 'hearto';
             color = focused ? 'red' : '#6E6E6E';
-            return <AntDesign name={iconName} size={30} color={color} />;
+            return <AntDesign name={iconName} size={25} color={color} />;
           } else if (route.name === 'Notification') {
             iconName = focused ? 'notifications' : 'notifications-outline';
             color = focused ? 'red' : '#6E6E6E';
-            return <Ionicons name={iconName} size={30} color={color} />;
+            return <Ionicons name={iconName} size={25} color={color} />;
           } else if (route.name === 'Me') {
             iconName = focused ? 'person' : 'person-outline';
             color = focused ? 'red' : '#6E6E6E';
-            return <Ionicons name={iconName} size={30} color={color} />;
+            return <Ionicons name={iconName} size={25} color={color} />;
           }
         },
 
@@ -71,7 +74,7 @@ const BottomTab = () => {
         },
       })}
       tabBarOptions={{
-        style: {height: 60},
+        style: {height: 50},
       }}>
       <Bottom.Screen name="Home" component={Home} />
       <Bottom.Screen name="Order" component={Order} />
@@ -85,12 +88,40 @@ const BottomTab = () => {
 const AppStack = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}}>
-        <Stack.Screen name="BottomTab" component={BottomTab} />
-        <Stack.Screen name="Product" component={Product} />
-        <Stack.Screen name="Detail" component={Detail} />
-        <Stack.Screen name="ProductDescribe" component={ProductDescribe} />
-        <Stack.Screen name="Collections" component={Collections} />
+      <Stack.Navigator>
+        <Stack.Screen
+          name="BottomTab"
+          component={BottomTab}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Product"
+          component={Product}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Detail"
+          component={Detail}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ProductDescribe"
+          component={ProductDescribe}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Collections"
+          component={Collections}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{
+            headerTitle: 'Đăng nhập và đăng ký',
+            headerStyle: {height: 50, backgroundColor: '#FAFAFA'},
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -101,7 +132,7 @@ export default AppStack;
 const styles = StyleSheet.create({
   textactive: {
     color: '#585858',
-    fontSize: 13,
+    fontSize: 12,
     textAlign: 'center',
     marginTop: 0,
     marginBottom: 2,

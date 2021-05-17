@@ -47,7 +47,7 @@ const Services = props => {
                   }}>
                   <Text
                     style={{
-                      fontSize: 20,
+                      fontSize: 18,
                       fontWeight: item.title == title ? 'bold' : '500',
                     }}>
                     {item.title}
