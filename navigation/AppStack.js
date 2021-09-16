@@ -21,8 +21,7 @@ import ProductDescribe from '../Screens/ProductDescribe';
 import Collections from '../Screens/Collections';
 import Login from '../Screens/Login';
 import HeaderTab from '../components/HeaderTab';
-import {Header} from 'react-native/Libraries/NewAppScreen';
-
+import {useDispatch, useSelector} from 'react-redux';
 const Bottom = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
@@ -84,46 +83,55 @@ const BottomTab = () => {
     </Bottom.Navigator>
   );
 };
-
-const AppStack = () => {
+const HomeTab = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="BottomTab"
-          component={BottomTab}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Product"
-          component={Product}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Detail"
-          component={Detail}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="ProductDescribe"
-          component={ProductDescribe}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Collections"
-          component={Collections}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          options={{
-            headerTitle: 'Đăng nhập và đăng ký',
-            headerStyle: {height: 50, backgroundColor: '#FAFAFA'},
-          }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Stack.Navigator>
+      <Stack.Screen
+        name="BottomTab"
+        component={BottomTab}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Product"
+        component={Product}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Detail"
+        component={Detail}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="ProductDescribe"
+        component={ProductDescribe}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Collections"
+        component={Collections}
+        options={{headerShown: false}}
+      />
+    </Stack.Navigator>
+  );
+};
+const AuthStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{
+          headerTitle: 'Đăng nhập và đăng ký',
+          headerStyle: {height: 50, backgroundColor: '#FAFAFA'},
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
+const AppStack = () => {
+  const token = useSelector(store => store.userInfo.token);
+  return (
+    <NavigationContainer>{token ? HomeTab() : AuthStack()}</NavigationContainer>
   );
 };
 

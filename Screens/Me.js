@@ -13,9 +13,13 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Entypo from 'react-native-vector-icons/Entypo';
+import {useDispatch, useSelector} from 'react-redux';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+
 const Me = ({navigation}) => {
+  const data = useSelector(store => store.userInfo.userInfo);
+  const dispatch = useDispatch();
   // useEffect(() => {
   //   navigation.setOptions({
   //     tabBarVisible: true,
@@ -24,6 +28,9 @@ const Me = ({navigation}) => {
   //     })
   //   });
   // }, []);
+  const Logout = () => {
+    dispatch({type: 'Login', data: {userInfo: null, token: null}});
+  };
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -39,8 +46,9 @@ const Me = ({navigation}) => {
             </Text>
             <Image
               source={{
-                uri:
-                  'https://scontent.fhan3-1.fna.fbcdn.net/v/t1.6435-9/148889733_2804212123228229_1584969750114084438_n.jpg?_nc_cat=110&ccb=1-3&_nc_sid=174920&_nc_ohc=49a0EzaNUPUAX8LE3Z6&_nc_ht=scontent.fhan3-1.fna&oh=3f46fd7ebff5b387f6840abcc2dc6ecc&oe=60A71607',
+                uri: data
+                  ? data.picture.data.url
+                  : 'https://i.pinimg.com/564x/a8/f7/cf/a8f7cf02e5ffaf226068108a42d07f07.jpg',
               }}
               style={styles.userImg}
             />
@@ -50,7 +58,9 @@ const Me = ({navigation}) => {
               color="#EE9800"
               style={styles.checkIcon}
             />
-            <Text style={styles.userName}>Bùi Hùng</Text>
+            <Text style={styles.userName}>
+              {data ? data.name : 'Người Dùng'}
+            </Text>
           </ImageBackground>
         </View>
         <View style={{flex: 0.6}}>
@@ -181,7 +191,7 @@ const Me = ({navigation}) => {
               <TouchableOpacity
                 style={styles.btnLogOut}
                 activeOpacity={0.7}
-                onPress={() => navigation.navigate('Login')}>
+                onPress={Logout}>
                 <Text>Đăng Xuất</Text>
               </TouchableOpacity>
               <View style={{top: 8}}>

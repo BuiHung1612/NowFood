@@ -12,33 +12,34 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {useNavigation} from '@react-navigation/native';
-import {getNearMe} from '../services/API';
 import {getImage} from '../ultis/index';
 import {useDispatch, useSelector} from 'react-redux';
-import axios from 'axios';
+import {callNearme} from '../reducers/getApI';
 const NearMe = props => {
   const [loading, setLoading] = useState(false);
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
   const navigation = useNavigation();
-  const [DataNearMe, setNearMe] = useState();
+  const DataNearMe = useSelector(store => store.getApI.NearMe);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    let componentMounted = true;
-    setLoading(true);
-    const getApiProduct = async () => {
-      const result = await getNearMe();
-      setNearMe(result.data.reply.delivery_infos);
-    };
-    if (componentMounted == true) {
-      getApiProduct();
-      setLoading(false);
-    }
-    return () => {
-      // This code runs when component is unmounted
-      componentMounted = false; // (4) set it to false if we leave the page
-    };
+    // let componentMounted = true;
+    // setLoading(true);
+    // const getApiProduct = async () => {
+    //   const result = await getNearMe();
+    //   dispatch({type:'GET_DATA',data:result.data})
+    //   setNearMe(result.data.reply.delivery_infos);
+    // };
+    // if (componentMounted == true) {
+    //   getApiProduct();
+    //   setLoading(false);
+    // }
+    // return () => {
+    //   // This code runs when component is unmounted
+    //   componentMounted = false; // (4) set it to false if we leave the page
+    // };
+    dispatch(callNearme());
   }, []);
   return (
     <View>

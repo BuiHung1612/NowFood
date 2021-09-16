@@ -17,7 +17,7 @@ const Saved = () => {
   const windowHeight = Dimensions.get('window').height;
   const [text, setText] = useState('Dịch vụ');
   const [onClick, setOnClick] = useState(false);
-  const data = useSelector(store => store.favouriteShop);
+  const data = useSelector(store => store.favouriteShop.shop);
   console.log(data);
   const onHandlePress = item => {
     setOnClick(!onClick);
@@ -45,7 +45,7 @@ const Saved = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.contain}>
-        {data != '' ? (
+        {data?.length != 0 ? (
           <FlatList
             data={data}
             renderItem={({item}) => {
@@ -84,7 +84,7 @@ const Saved = () => {
                       {item.promotion?.map((e, i) => {
                         return (
                           <View style={styles.itemPromotion} key={i}>
-                            <Text style={{color: 'red', fontSize: 13}}>
+                            <Text style={{color: 'red', fontSize: 11}}>
                               {e.text}
                             </Text>
                           </View>
@@ -160,9 +160,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingLeft: 10,
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height * 0.19,
+    height: Dimensions.get('window').height * 0.18,
     borderBottomWidth: 0.5,
-    borderBottomColor: '#bdbdbd',
+    borderBottomColor: '#f2f2f2',
     flexDirection: 'row',
   },
   itemImg: {
@@ -185,8 +185,8 @@ const styles = StyleSheet.create({
     marginRight: 5,
     top: 15,
     borderColor: 'red',
-    width: 85,
-    height: 25,
+    width: 65,
+    height: 20,
     justifyContent: 'center',
     alignItems: 'center',
   },

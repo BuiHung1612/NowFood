@@ -20,7 +20,7 @@ import {
   getShipNow,
   getShop,
 } from '../services/API';
-import {getImageShop, getImage} from '../ultis';
+import {getImage} from '../ultis';
 import {useDispatch, useSelector} from 'react-redux';
 
 const Detail = ({route, navigation}) => {
@@ -28,10 +28,18 @@ const Detail = ({route, navigation}) => {
   console.log(id, idScreen, service_type);
   const dispatch = useDispatch();
   const ToogleScreen = () => {
-    if (idScreen == '1') return getNearMe();
-    if (idScreen == '2') return getSelling();
-    if (idScreen == '3') return getRate();
-    if (idScreen == '4') return getShipNow();
+    if (idScreen == '1') {
+      return getNearMe();
+    }
+    if (idScreen == '2') {
+      return getSelling();
+    }
+    if (idScreen == '3') {
+      return getRate();
+    }
+    if (idScreen == '4') {
+      return getShipNow();
+    }
   };
 
   useEffect(() => {
@@ -42,25 +50,39 @@ const Detail = ({route, navigation}) => {
   const [DataShop, setDataShop] = useState([]);
   const [screen, setscreen] = useState('order');
   const [heart, setHeart] = useState(false);
+  const Heart = useSelector(store => store.favouriteShop.shop);
+  console.log('heartr', Heart);
   const Footer = id => {
-    //console.log('idSHOPP', id);
-    if (screen == 'order') return <Order id={id} />;
-    if (screen == 'comment') return <Comment />;
-    if (screen == 'information') return <Information />;
+    if (screen == 'order') {
+      return <Order id={id} />;
+    }
+    if (screen == 'comment') {
+      return <Comment />;
+    }
+    if (screen == 'information') {
+      return <Information />;
+    }
   };
-  const clickHeart = (idShop, title, img, rating, promotion) => () => {
+  const clickHeart = (idShop, name, img, rating, promotions) => () => {
     setHeart(!heart);
+
     dispatch({
       type: 'addShop',
       data: {
         idShop: idShop,
-        idScreen: idScreen,
-        title: title,
+        title: name,
         img: img,
         rating: rating,
-        promotion: promotion,
+        promotions: promotions,
+        heart: !heart,
       },
     });
+    // : dispatch({
+    //     type: 'removeShop',
+    //     data: {
+    //       idShop: idShop,
+    //     },
+    //   });
   };
 
   useEffect(() => {
@@ -68,6 +90,13 @@ const Detail = ({route, navigation}) => {
       const result = await ToogleScreen();
 
       setDataShop(result.data.reply.delivery_infos);
+      if (Heart.length != 0) {
+        Heart.map(e => {
+          if (e.heart == true && e.idShop == id) {
+            setHeart(true);
+          }
+        });
+      }
       console.log('dât', result.data.reply.delivery_infos);
     };
 
@@ -81,7 +110,7 @@ const Detail = ({route, navigation}) => {
         data={DataShop}
         keyExtractor={item => item.delivery_id}
         renderItem={({item}) => {
-          if (item.id == id)
+          if (item.id == id) {
             return (
               <View key={item.delivery_id}>
                 <ImageBackground
@@ -210,6 +239,7 @@ const Detail = ({route, navigation}) => {
                 </View>
               </View>
             );
+          }
         }}
       />
     </View>

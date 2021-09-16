@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Dimensions,
   FlatList,
@@ -22,12 +22,14 @@ import NearMe from '../components/nearMe';
 import Selling from '../components/selling';
 import Rate from '../components/Rate';
 import ShipNow from '../components/ShipNow';
-import {useDispatch, useSelector} from 'react-redux';
-import {getCollection} from '../services/API';
-const Home = ({navigation}) => {
+import { useDispatch, useSelector } from 'react-redux';
+import { getCollection } from '../services/API';
+import { CallCollection } from '../reducers/getApI';
+const Home = ({ navigation }) => {
   const [SC, setScreen] = useState('NearMe');
   const dispatch = useDispatch();
-  const [collections, setCollections] = useState();
+  const collections = useSelector(store => store.getApI.Collection);
+  // const [collections, setCollections] = useState();
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
   const ToggleScreen = () => {
@@ -51,8 +53,8 @@ const Home = ({navigation}) => {
       return (
         <Image
           key={e.id}
-          source={{uri: e.url}}
-          style={{width: '100%', height: '100%', resizeMode: 'cover'}}
+          source={{ uri: e.url }}
+          style={{ width: '100%', height: '100%', resizeMode: 'cover' }}
         />
       );
     });
@@ -62,8 +64,8 @@ const Home = ({navigation}) => {
       return (
         <Image
           key={i}
-          source={{uri: e.url}}
-          style={{width: '95%', height: 120, resizeMode: 'cover'}}
+          source={{ uri: e.url }}
+          style={{ width: '95%', height: 120, resizeMode: 'cover' }}
         />
       );
     });
@@ -73,18 +75,18 @@ const Home = ({navigation}) => {
       if (e.id < 9) {
         return (
           <TouchableOpacity
-            style={{width: 80, marginLeft: 5}}
+            style={{ width: 80, marginLeft: 5 }}
             key={e.id}
             onPress={() => {
-              return navigation.navigate('Product', {idShop: e.idShop});
+              return navigation.navigate('Product', { idShop: e.idShop });
             }}>
             <View style={styles.btn}>
               <Image
-                source={{uri: e.url}}
-                style={{width: 45, height: 45, borderRadius: 15}}
+                source={{ uri: e.url }}
+                style={{ width: 45, height: 45, borderRadius: 15 }}
               />
             </View>
-            <Text style={{width: 80, textAlign: 'center', fontSize: 14}}>
+            <Text style={{ width: 80, textAlign: 'center', fontSize: 14 }}>
               {e.title}
             </Text>
           </TouchableOpacity>
@@ -97,19 +99,19 @@ const Home = ({navigation}) => {
       if (e.id > 8 && e.id < 17) {
         return (
           <TouchableOpacity
-            style={{marginLeft: 5, width: 80}}
+            style={{ marginLeft: 5, width: 80 }}
             key={e.id}
             onPress={() => {
-              return navigation.navigate('Product', {idShop: e.idShop});
+              return navigation.navigate('Product', { idShop: e.idShop });
             }}>
             <View style={styles.btn}>
               <Image
-                source={{uri: e.url}}
-                style={{width: 45, height: 45, borderRadius: 15}}
+                source={{ uri: e.url }}
+                style={{ width: 45, height: 45, borderRadius: 15 }}
               />
             </View>
             <Text
-              style={{width: 80, fontSize: 14, textAlign: 'center'}}
+              style={{ width: 80, fontSize: 14, textAlign: 'center' }}
               numberOfLines={2}>
               {e.title}
             </Text>
@@ -120,22 +122,23 @@ const Home = ({navigation}) => {
   };
 
   useEffect(() => {
-    const listCollection = async () => {
-      const result = await getCollection();
-      setCollections(result.data.reply.collections);
-      //console.log(result.data.reply.collections);
-    };
-    listCollection();
-    return () => {
-      setCollections({});
-    };
+    // const listCollection = async () => {
+    //   const result = await getCollection();
+    //   setCollections(result.data.reply.collections);
+    //   //console.log(result.data.reply.collections);
+    // };
+    // listCollection();
+    // return () => {
+    //   setCollections({});
+    // };
+    dispatch(CallCollection());
   }, []);
   return (
     <View style={styles.container}>
       <FlatList
         ListHeaderComponent={() => {
           return (
-            <View style={{flex: 0.17}}>
+            <View style={{ flex: 0.17 }}>
               <View style={styles.location}>
                 <Text
                   style={{
@@ -147,7 +150,7 @@ const Home = ({navigation}) => {
                   }}>
                   Giao hàng đến:
                 </Text>
-                <View style={{flexDirection: 'row'}}>
+                <View style={{ flexDirection: 'row' }}>
                   <Ionicons name="location" size={20} color={'#FF0000'} />
                   <Text
                     style={{
@@ -163,7 +166,7 @@ const Home = ({navigation}) => {
                     name="chevron-forward-outline"
                     size={23}
                     color={'#000'}
-                    style={{bottom: 2}}
+                    style={{ bottom: 2 }}
                   />
                 </View>
               </View>
@@ -172,7 +175,7 @@ const Home = ({navigation}) => {
                   name="search"
                   size={20}
                   color={'#848484'}
-                  style={{position: 'absolute', zIndex: 100, left: 30, top: 10}}
+                  style={{ position: 'absolute', zIndex: 100, left: 30, top: 10 }}
                 />
                 <TextInput
                   placeholder="Starbucks Coffee giảm 50%"
@@ -211,8 +214,8 @@ const Home = ({navigation}) => {
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}>
                   <View>
-                    <View style={{flexDirection: 'row'}}>{Listbtn1()}</View>
-                    <View style={{flexDirection: 'row'}}>{Listbtn2()}</View>
+                    <View style={{ flexDirection: 'row' }}>{Listbtn1()}</View>
+                    <View style={{ flexDirection: 'row' }}>{Listbtn2()}</View>
                   </View>
                 </ScrollView>
               </View>
@@ -235,7 +238,7 @@ const Home = ({navigation}) => {
                     Bộ sưu tập
                   </Text>
                   <TouchableOpacity
-                    style={{flexDirection: 'row'}}
+                    style={{ flexDirection: 'row' }}
                     onPress={() => navigation.navigate('Collections')}>
                     <Text
                       style={{
@@ -251,7 +254,7 @@ const Home = ({navigation}) => {
                       name="chevron-forward-outline"
                       size={23}
                       color={'#000'}
-                      style={{bottom: 2, marginTop: 3}}
+                      style={{ bottom: 2, marginTop: 3 }}
                     />
                   </TouchableOpacity>
                 </View>
@@ -260,7 +263,7 @@ const Home = ({navigation}) => {
                     data={collections}
                     showsHorizontalScrollIndicator={false}
                     horizontal
-                    renderItem={({item}) => {
+                    renderItem={({ item }) => {
                       return (
                         <TouchableOpacity
                           style={{
@@ -270,7 +273,7 @@ const Home = ({navigation}) => {
                           }}
                           key={item.id}>
                           <Image
-                            source={{uri: item.photos?.[0].value}}
+                            source={{ uri: item.photos?.[0].value }}
                             style={{
                               width: item.photos?.[0].width - 140,
                               height: item.photos?.[0].height - 50,
@@ -312,7 +315,7 @@ const Home = ({navigation}) => {
                     Xem gần đây
                   </Text>
                   <TouchableOpacity
-                    style={{flexDirection: 'row', marginTop: 5}}>
+                    style={{ flexDirection: 'row', marginTop: 5 }}>
                     <Text
                       style={{
                         fontSize: 16,
@@ -327,7 +330,7 @@ const Home = ({navigation}) => {
                       name="chevron-forward-outline"
                       size={23}
                       color={'#000'}
-                      style={{bottom: 2, marginTop: 3}}
+                      style={{ bottom: 2, marginTop: 3 }}
                     />
                   </TouchableOpacity>
                 </View>
@@ -336,7 +339,7 @@ const Home = ({navigation}) => {
                     data={Recent}
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    renderItem={({item}) => {
+                    renderItem={({ item }) => {
                       return (
                         <View
                           style={{
@@ -346,7 +349,7 @@ const Home = ({navigation}) => {
                           }}
                           key={item.id}>
                           <Image
-                            source={{uri: item.url}}
+                            source={{ uri: item.url }}
                             style={{
                               width: 130,
                               height: 110,
@@ -418,7 +421,7 @@ const Home = ({navigation}) => {
                   autoplay
                   autoplayTimeout={3}
                   height={130}
-                  style={{margin: 10}}>
+                  style={{ margin: 10 }}>
                   {ListImg1()}
                 </Swiper>
               </View>
@@ -427,13 +430,13 @@ const Home = ({navigation}) => {
               <View style={styles.collecion}>
                 <View style={styles.headerItem}>
                   <Text style={styles.headerItemText1}>Đồng giá 8k</Text>
-                  <TouchableOpacity style={{flexDirection: 'row'}}>
+                  <TouchableOpacity style={{ flexDirection: 'row' }}>
                     <Text style={styles.headerItemText2}>Xem thêm</Text>
                     <Ionicons
                       name="chevron-forward-outline"
                       size={23}
                       color={'#000'}
-                      style={{bottom: 2, marginTop: 3}}
+                      style={{ bottom: 2, marginTop: 3 }}
                     />
                   </TouchableOpacity>
                 </View>
@@ -442,14 +445,14 @@ const Home = ({navigation}) => {
                     data={Collection}
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    renderItem={({item}) => {
+                    renderItem={({ item }) => {
                       return (
                         <View
                           style={{
                             marginLeft: 10,
                           }}>
                           <Image
-                            source={{uri: item.url}}
+                            source={{ uri: item.url }}
                             style={styles.imgItem}
                           />
                           <Text numberOfLines={1} style={styles.textItem}>
@@ -468,13 +471,13 @@ const Home = ({navigation}) => {
                   <Text style={styles.headerItemText1}>
                     Mọi người vừa ăn gì ?
                   </Text>
-                  <TouchableOpacity style={{flexDirection: 'row'}}>
+                  <TouchableOpacity style={{ flexDirection: 'row' }}>
                     <Text style={styles.headerItemText2}>Xem thêm</Text>
                     <Ionicons
                       name="chevron-forward-outline"
                       size={23}
                       color={'#000'}
-                      style={{bottom: 2, marginTop: 3}}
+                      style={{ bottom: 2, marginTop: 3 }}
                     />
                   </TouchableOpacity>
                 </View>
@@ -483,11 +486,11 @@ const Home = ({navigation}) => {
                     data={Collection}
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    renderItem={({item}) => {
+                    renderItem={({ item }) => {
                       return (
-                        <View style={{marginLeft: 10}}>
+                        <View style={{ marginLeft: 10 }}>
                           <Image
-                            source={{uri: item.url}}
+                            source={{ uri: item.url }}
                             style={styles.imgItem}
                           />
                           <Text numberOfLines={1} style={styles.textItem}>
@@ -506,13 +509,13 @@ const Home = ({navigation}) => {
                   <Text style={styles.headerItemText1}>
                     Freeship Xtra + Giảm 50%
                   </Text>
-                  <TouchableOpacity style={{flexDirection: 'row'}}>
+                  <TouchableOpacity style={{ flexDirection: 'row' }}>
                     <Text style={styles.headerItemText2}>Xem thêm</Text>
                     <Ionicons
                       name="chevron-forward-outline"
                       size={23}
                       color={'#000'}
-                      style={{bottom: 2, marginTop: 3}}
+                      style={{ bottom: 2, marginTop: 3 }}
                     />
                   </TouchableOpacity>
                 </View>
@@ -521,11 +524,11 @@ const Home = ({navigation}) => {
                     data={Collection}
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    renderItem={({item}) => {
+                    renderItem={({ item }) => {
                       return (
-                        <View style={{marginLeft: 10}}>
+                        <View style={{ marginLeft: 10 }}>
                           <Image
-                            source={{uri: item.url}}
+                            source={{ uri: item.url }}
                             style={styles.imgItem}
                           />
                           <Text numberOfLines={1} style={styles.textItem}>
@@ -544,12 +547,12 @@ const Home = ({navigation}) => {
                   data={FlatListHome2}
                   horizontal
                   showsHorizontalScrollIndicator={false}
-                  renderItem={({item}) => {
+                  renderItem={({ item }) => {
                     return (
-                      <TouchableOpacity style={{padding: 10}}>
+                      <TouchableOpacity style={{ padding: 10 }}>
                         <View style={styles.btnitem1}>
                           <Image
-                            source={{uri: item.img}}
+                            source={{ uri: item.img }}
                             style={styles.imgbtn}
                           />
                         </View>
@@ -580,12 +583,12 @@ const Home = ({navigation}) => {
                   onPress={() => setScreen('NearMe')}
                   style={[
                     styles.btnscreen,
-                    {borderBottomColor: SC == 'NearMe' ? 'red' : '#fff'},
+                    { borderBottomColor: SC == 'NearMe' ? 'red' : '#fff' },
                   ]}>
                   <Text
                     style={[
                       styles.textscreen,
-                      {fontWeight: SC == 'NearMe' ? 'bold' : '500'},
+                      { fontWeight: SC == 'NearMe' ? 'bold' : '500' },
                     ]}>
                     Gần tôi
                   </Text>
@@ -594,12 +597,12 @@ const Home = ({navigation}) => {
                   onPress={() => setScreen('selling')}
                   style={[
                     styles.btnscreen,
-                    {borderBottomColor: SC == 'selling' ? 'red' : '#fff'},
+                    { borderBottomColor: SC == 'selling' ? 'red' : '#fff' },
                   ]}>
                   <Text
                     style={
                       (styles.textscreen,
-                      {fontWeight: SC == 'selling' ? 'bold' : '500'})
+                        { fontWeight: SC == 'selling' ? 'bold' : '500' })
                     }>
                     Đang bán
                   </Text>
@@ -608,12 +611,12 @@ const Home = ({navigation}) => {
                   onPress={() => setScreen('rate')}
                   style={[
                     styles.btnscreen,
-                    {borderBottomColor: SC == 'rate' ? 'red' : '#fff'},
+                    { borderBottomColor: SC == 'rate' ? 'red' : '#fff' },
                   ]}>
                   <Text
                     style={
                       (styles.textscreen,
-                      {fontWeight: SC == 'rate' ? 'bold' : '500'})
+                        { fontWeight: SC == 'rate' ? 'bold' : '500' })
                     }>
                     Đánh giá
                   </Text>
@@ -622,12 +625,12 @@ const Home = ({navigation}) => {
                   onPress={() => setScreen('now')}
                   style={[
                     styles.btnscreen,
-                    {borderBottomColor: SC == 'now' ? 'red' : '#fff'},
+                    { borderBottomColor: SC == 'now' ? 'red' : '#fff' },
                   ]}>
                   <Text
                     style={
                       (styles.textscreen,
-                      {fontWeight: SC == 'now' ? 'bold' : '500'})
+                        { fontWeight: SC == 'now' ? 'bold' : '500' })
                     }>
                     Giao nhanh
                   </Text>
@@ -724,7 +727,7 @@ const styles = StyleSheet.create({
     height: 55,
     borderRadius: 40,
   },
-  imgItem: {width: 130, height: 130, marginTop: 5},
+  imgItem: { width: 130, height: 130, marginTop: 5 },
   textItem: {
     fontSize: 16,
     fontWeight: '500',

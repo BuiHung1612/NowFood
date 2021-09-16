@@ -10,9 +10,56 @@ import {
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Dimensions} from 'react-native';
+import {
+  AccessToken,
+  LoginManager,
+  GraphRequest,
+  GraphRequestManager,
+} from 'react-native-fbsdk';
+import {useDispatch} from 'react-redux';
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const Login = () => {
+  const dispatch = useDispatch();
+  const getInfoFromToken = token => {
+    const PROFILE_REQUEST_PARAMS = {
+      fields: {
+        string: 'id,name,first_name,last_name,picture,short_name',
+      },
+    };
+    const profileRequest = new GraphRequest(
+      '/me',
+      {token, parameters: PROFILE_REQUEST_PARAMS},
+      (error, result) => {
+        if (error) {
+          console.log('Login info has an error :', error);
+        } else {
+          dispatch({type: 'Login', data: {userInfo: result, token: token}});
+          console.log('result', result);
+        }
+      },
+    );
+    new GraphRequestManager().addRequest(profileRequest).start();
+  };
+  const SignInFb = () => {
+    LoginManager.logInWithPermissions(['public_profile']).then(
+      function (result) {
+        if (result.isCancelled) {
+          console.log('Login cancelled');
+        } else {
+          AccessToken.getCurrentAccessToken().then(data => {
+            const accessToken = data.accessToken.toString();
+            getInfoFromToken(accessToken);
+            console.log(accessToken);
+          });
+        }
+      },
+      function (error) {
+        console.log('Login fail with error: ' + error);
+      },
+    );
+  };
   return (
     <KeyboardAvoidingView style={styles.container}>
       <View style={styles.logoView}>
@@ -44,9 +91,10 @@ const Login = () => {
       <View style={styles.viewBtn1}>
         <View style={styles.viewDivider}>
           <View style={styles.divider} />
-          <Text style={{color: '#A4A4A4'}}>HOẶC</Text>
+          <Text style={{color: '#A4A4A4'}}>HOẶC </Text>
           <View style={styles.divider} />
         </View>
+
         <TouchableOpacity style={styles.btn2}>
           <Image
             source={{
@@ -55,13 +103,13 @@ const Login = () => {
             }}
             style={styles.btnLogo}
           />
-          <Text style={styles.textBtn}>Tiếp tục với Facebook</Text>
+          <Text style={styles.textBtn}>Tiếp tục với Google</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btn2}>
+        <TouchableOpacity style={styles.btn2} onPress={SignInFb}>
           <Image
             source={{
               uri:
-                'https://www.pngitem.com/pimgs/m/506-5062674_facebook-transparent-logo-round-facebook-logo-round-white.png',
+                'https://www.eipm.org/wp-content/uploads/2018/03/facebook-round-white.png',
             }}
             style={styles.btnLogo}
           />
